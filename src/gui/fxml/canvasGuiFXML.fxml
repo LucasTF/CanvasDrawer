@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="lineButton" layoutX="272.0" layoutY="8.0" mnemonicParsing="false" onAction="#setLineMode" prefWidth="100.0" text="Reta" />
+            <Button fx:id="circButton" layoutX="384.0" layoutY="8.0" mnemonicParsing="false" onAction="#setCircMode" prefWidth="100.0" text="Circunferência" />
+            <MenuButton layoutX="14.0" layoutY="8.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Cor">
+              <items>
+                <MenuItem fx:id="blackOption" mnemonicParsing="false" onAction="#setColorBlack" text="Preto" />
+                <MenuItem fx:id="redOption" mnemonicParsing="false" onAction="#setColorRed" text="Vermelho" />
+              </items>
+            </MenuButton>
+         </children>
+      </AnchorPane>
+      <Separator layoutY="39.0" prefWidth="500.0" />
+      <Pane fx:id="canvasPane" layoutY="40.0" prefHeight="460.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+         <children>
+            <Canvas fx:id="canvas" height="460.0" width="500.0" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
