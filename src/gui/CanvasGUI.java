@@ -67,7 +67,10 @@ public class CanvasGUI {
 	public void setLineMode() {
 		lineButton.setDisable(true);
 		circButton.setDisable(false);
+<<<<<<< HEAD
 		pointButton.setDisable(false);
+=======
+>>>>>>> 77416228d74ff67f9e4aac612c5b529b55414829
 		shape = new Line();
 		canvas.setOnMouseClicked(e -> drawShape(e));
 	}
@@ -76,7 +79,10 @@ public class CanvasGUI {
 	public void setCircMode() {
 		circButton.setDisable(true);
 		lineButton.setDisable(false);
+<<<<<<< HEAD
 		pointButton.setDisable(false);
+=======
+>>>>>>> 77416228d74ff67f9e4aac612c5b529b55414829
 		shape = new Circle();
 		canvas.setOnMouseClicked(e -> drawShape(e));
 	}
