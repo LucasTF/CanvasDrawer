@@ -89,21 +89,13 @@ public class Circle implements IShape {
 		return valueA - valueB;
 	}
 
-<<<<<<< HEAD
 	/*private int getXForDraw(int calculatedX){
-=======
-	private int getXForDraw(int calculatedX){
->>>>>>> 77416228d74ff67f9e4aac612c5b529b55414829
 		return calculatedX + (int) center.getPoint().getX();
 	}
 
 	private int getYForDraw(int calculatedY){
 		return calculatedY + (int) center.getPoint().getY();
-<<<<<<< HEAD
 	}*/
-=======
-	}
->>>>>>> 77416228d74ff67f9e4aac612c5b529b55414829
 
 	private int getXForDraw(double calculatedX){
 		return (int) (calculatedX + center.getPoint().getX());
