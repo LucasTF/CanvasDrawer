@@ -1,9 +1,10 @@
 package shapes;
 
+import abstractions.IShape;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class Line {
+public class Line implements IShape {
 	
 	private Point firstPoint;
 	private Point lastPoint;
@@ -25,7 +26,7 @@ public class Line {
 		lastPoint = p;
 	}
 	
-	public void drawLine(GraphicsContext gc, Color c, double diameter) {
+	public void draw(GraphicsContext gc, Color c, double diameter) {
 		Point p;
 		double deltaX, deltaY;
 		int steps;
