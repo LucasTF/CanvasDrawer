@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -24,8 +26,8 @@ public class CanvasGUI {
 	
 	private static final String fxml = "fxml/CanvasGuiFXML.fxml";
 	
-	@FXML private MenuItem blackOption;
-	@FXML private MenuItem redOption;
+	@FXML private MenuButton colorMenu;
+	@FXML private Slider diameterSlider;
 	@FXML private Button lineButton;
 	@FXML private Button circButton;
 	@FXML private Pane canvasPane;
@@ -46,6 +48,8 @@ public class CanvasGUI {
 		Parent root = loader.load();
 		this.stage.setScene(new Scene(root));
 		canvasPane.setBackground(new Background(new BackgroundFill(Color.AZURE, CornerRadii.EMPTY, Insets.EMPTY)));
+		stage.setTitle("Canvas");
+		stage.setResizable(false);
 		stage.show();
 		
 		gc = canvas.getGraphicsContext2D();
@@ -57,55 +61,110 @@ public class CanvasGUI {
 		lineButton.setDisable(true);
 		circButton.setDisable(false);
 		line = new Line();
-		canvas.setOnMouseClicked(e -> {
-			int x, y;
-				
-			x = (int)e.getX();
-			y = (int)e.getY();
-			Point p = new Point(x, y);
-			p.setColor(drawColor);
-			p.drawPoint(gc);
-			if(openPoints == 0) {
-				line.setFirstPoint(p);
-			}
-			else if(openPoints == 1) {
-				line.setLastPoint(p);
-			}
-			openPoints++;
-			if(openPoints == 2) {
-				line.drawLine(gc);
-				openPoints = 0;
-			}
-			
-		});
+		canvas.setOnMouseClicked(e -> drawLine(e));
 	}
 	
 	@FXML
 	public void setCircMode() {
 		circButton.setDisable(true);
 		lineButton.setDisable(false);
+		
+		canvas.setOnMouseClicked(e -> drawCircle(e));
 	}
 	
-	public void setPointMode() {
-		canvas.setOnMouseClicked(e -> {
-			int x, y;
-			
-			x = (int)e.getX();
-			y = (int)e.getY();
-			Point p = new Point(x, y);
-			p.setColor(drawColor);
-			p.drawPoint(gc);
-		});
+	private void setPointMode() {
+		canvas.setOnMouseClicked(e -> drawPoint(e));
 	}
 	
 	@FXML
 	public void setColorBlack() {
 		drawColor = Color.BLACK;
+		colorMenu.setText("Preto");
 	}
 	
 	@FXML
 	public void setColorRed() {
 		drawColor = Color.RED;
+		colorMenu.setText("Vermelho");
 	}
 	
+	@FXML
+	public void setColorBlue() {
+		drawColor = Color.BLUE;
+		colorMenu.setText("Azul");
+	}
+	
+	@FXML
+	public void setColorGreen() {
+		drawColor = Color.GREEN;
+		colorMenu.setText("Verde");
+	}
+	
+	@FXML
+	public void setColorYellow() {
+		drawColor = Color.YELLOW;
+		colorMenu.setText("Amarelo");
+	}
+	
+	@FXML
+	public void setColorCyan() {
+		drawColor = Color.CYAN;
+		colorMenu.setText("Ciano");
+	}
+	
+	@FXML
+	public void setColorPink() {
+		drawColor = Color.PINK;
+		colorMenu.setText("Rosa");
+	}
+	
+	private void drawPoint(MouseEvent e){
+		int x, y;
+		
+		x = (int)e.getX();
+		y = (int)e.getY();
+		Point p = new Point(x, y, diameterSlider.getValue());
+		p.setColor(drawColor);
+		p.drawPoint(gc);
+	}
+	
+	private void drawCircle(MouseEvent e){
+		System.out.println("Feature not implemented");
+	}
+	
+	private void drawLine(MouseEvent e){
+		int x, y;
+		
+		x = (int)e.getX();
+		y = (int)e.getY();
+		
+		Point p = new Point(x, y, diameterSlider.getValue());
+		
+		p.setColor(drawColor);
+		p.drawPoint(gc);
+		setupPoint(p);
+		if(openPoints > 1)
+			line.drawLine(gc, drawColor, diameterSlider.getValue());
+		refreshPoint();
+	}
+	
+	private void setupPoint(Point p){
+		if(openPoints == 0) {
+			line.setFirstPoint(p);
+			colorMenu.setDisable(true);
+			diameterSlider.setDisable(true);
+		}
+		else if(openPoints == 1) {
+			line.setLastPoint(p);
+		}
+		openPoints++;
+	}
+	
+	private void refreshPoint(){
+		if(openPoints == 2) {
+			openPoints = 0;
+			colorMenu.setDisable(false);
+			diameterSlider.setDisable(false);
+		}
+	}
 }

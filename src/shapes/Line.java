@@ -1,6 +1,7 @@
 package shapes;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Line {
 	
@@ -24,28 +25,28 @@ public class Line {
 		lastPoint = p;
 	}
 	
-	public void drawLine(GraphicsContext gc) {
+	public void drawLine(GraphicsContext gc, Color c, double diameter) {
 		Point p;
-		int deltaX, deltaY, steps;
-		deltaX = Math.abs((int) (lastPoint.getPoint().getX() - firstPoint.getPoint().getX()));
-		deltaY = Math.abs((int) (lastPoint.getPoint().getY() - firstPoint.getPoint().getY()));
-		System.out.println(deltaX + " " + deltaY);
-		if(deltaX > deltaY) {
-			steps = deltaX;
+		double deltaX, deltaY;
+		int steps;
+		deltaX = lastPoint.getPoint().getX() - firstPoint.getPoint().getX();
+		deltaY = lastPoint.getPoint().getY() - firstPoint.getPoint().getY();
+		if(Math.abs(deltaX) > Math.abs(deltaY)) {
+			steps = (int) Math.abs(Math.round(deltaX));
 		}
 		else {
-			steps = deltaY;
+			steps = (int) Math.abs(Math.round(deltaY));
 		}
 		double xIncrement, yIncrement;
 		xIncrement = deltaX / (double) steps;
 		yIncrement = deltaY / (double) steps;
-		System.out.println(xIncrement + " " + yIncrement);
-		int x = (int) firstPoint.getPoint().getX();
-		int y = (int) firstPoint.getPoint().getY();
+		double x = firstPoint.getPoint().getX();
+		double y = firstPoint.getPoint().getY();
 		for(int i = 0; i < steps; i++) {
-			x = (int) Math.round(x + xIncrement);
-			y = (int) Math.round(y + yIncrement);
-			p = new Point(x, y);
+			x = x + xIncrement;
+			y = y + yIncrement;
+			p = new Point((int) x, (int) y, diameter);
+			p.setColor(c);
 			p.drawPoint(gc);
 		}
 	}

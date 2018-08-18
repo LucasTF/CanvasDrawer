@@ -10,10 +10,10 @@ public class Point {
 	private int diameter;
 	private Point2D point2d;
 	
-	public Point(int x, int y) {
+	public Point(int x, int y, double diameter) {
 		point2d = new Point2D(x, y);
 		color = Color.BLACK;
-		diameter = 5;
+		this.diameter = (int) diameter;
 	}
 	
 	public Point2D getPoint() {
@@ -38,7 +38,7 @@ public class Point {
 	
 	public void drawPoint(GraphicsContext gc) {
 		gc.setFill(getColor());
-		gc.fillOval((int)point2d.getX(), (int)point2d.getY(), getDiameter(), getDiameter());
+		gc.fillOval((int)(point2d.getX()-(getDiameter()/2)), (int)(point2d.getY()-(getDiameter()/2)), getDiameter(), getDiameter());
 	}
 
 }
