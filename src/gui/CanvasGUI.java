@@ -2,6 +2,7 @@ package gui;
 
 import java.io.IOException;
 
+import abstractions.IShape;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -19,6 +20,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import shapes.Circle;
 import shapes.Line;
 import shapes.Point;
 
@@ -39,7 +41,7 @@ public class CanvasGUI {
 	private Stage stage;
 	
 	private int openPoints;
-	private Line line;
+	private IShape shape;
 
 	public CanvasGUI(Stage stage) throws IOException {
 		this.stage = stage;
@@ -60,16 +62,16 @@ public class CanvasGUI {
 	public void setLineMode() {
 		lineButton.setDisable(true);
 		circButton.setDisable(false);
-		line = new Line();
-		canvas.setOnMouseClicked(e -> drawLine(e));
+		shape = new Line();
+		canvas.setOnMouseClicked(e -> drawShape(e));
 	}
 	
 	@FXML
 	public void setCircMode() {
 		circButton.setDisable(true);
 		lineButton.setDisable(false);
-		
-		canvas.setOnMouseClicked(e -> drawCircle(e));
+		shape = new Circle();
+		canvas.setOnMouseClicked(e -> drawShape(e));
 	}
 	
 	private void setPointMode() {
@@ -128,34 +130,35 @@ public class CanvasGUI {
 		p.drawPoint(gc);
 	}
 	
-	private void drawCircle(MouseEvent e){
-		System.out.println("Feature not implemented");
-	}
-	
-	private void drawLine(MouseEvent e){
-		int x, y;
-		
-		x = (int)e.getX();
-		y = (int)e.getY();
-		
-		Point p = new Point(x, y, diameterSlider.getValue());
-		
+	private void drawShape(MouseEvent e){
+
+		Point p = getPoint(e);
+
 		p.setColor(drawColor);
 		p.drawPoint(gc);
 		setupPoint(p);
 		if(openPoints > 1)
-			line.drawLine(gc, drawColor, diameterSlider.getValue());
+			shape.draw(gc, drawColor, diameterSlider.getValue());
 		refreshPoint();
+	}
+
+	private Point getPoint(MouseEvent e){
+		int x, y;
+
+		x = (int)e.getX();
+		y = (int)e.getY();
+
+		return new Point(x, y, diameterSlider.getValue());
 	}
 	
 	private void setupPoint(Point p){
 		if(openPoints == 0) {
-			line.setFirstPoint(p);
+			shape.setFirstPoint(p);
 			colorMenu.setDisable(true);
 			diameterSlider.setDisable(true);
 		}
 		else if(openPoints == 1) {
-			line.setLastPoint(p);
+			shape.setLastPoint(p);
 		}
 		openPoints++;
 	}
