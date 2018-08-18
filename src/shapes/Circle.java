@@ -8,6 +8,9 @@ public class Circle implements IShape {
 
 	private Point center;
 	private Point circPoint;
+	private final double startingAngle = 0.1;
+	private final double angleStep = 0.1;
+	private final double finalAngle = 89.9;
 	private final int[][] quarterValues = { {1, 1 }, {1, -1}, {-1, 1}, {-1, -1} };
 	private final int[][] cornerValues = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 	
@@ -41,7 +44,7 @@ public class Circle implements IShape {
 	private void drawCircle(GraphicsContext gc, Color c, double diameter){
 		int radius = (int) Math.sqrt(getXForRadius() + getYForRadius());
 		drawCornerPoints(gc, c, diameter, radius);
-		for(double angle = 0.5; angle <= 89.5; angle+= 0.5){
+		for(double angle = startingAngle; angle <= finalAngle; angle+= angleStep){
 			double cos = Math.cos(Math.toRadians(angle));
 			double x = cos * radius;
 			double y = Math.sqrt(getValueSquare(radius) - getValueSquare(x));
@@ -89,17 +92,7 @@ public class Circle implements IShape {
 		return valueA - valueB;
 	}
 
-	/*private int getXForDraw(int calculatedX){
-		return calculatedX + (int) center.getPoint().getX();
-	}
-
-	private int getYForDraw(int calculatedY){
-		return calculatedY + (int) center.getPoint().getY();
-	}*/
-
-	private int getXForDraw(double calculatedX){
-		return (int) (calculatedX + center.getPoint().getX());
-	}
+	private int getXForDraw(double calculatedX){ return (int) (calculatedX + center.getPoint().getX());	}
 
 	private int getYForDraw(double calculatedY){
 		return (int) (calculatedY +  center.getPoint().getY());
