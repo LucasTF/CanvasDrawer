@@ -5,12 +5,10 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar prefHeight="25.0" prefWidth="500.0">
         <menus>
@@ -24,7 +22,7 @@
               <MenuItem fx:id="pointButton" mnemonicParsing="false" text="Ponto" />
                   <MenuItem fx:id="lineButton" mnemonicParsing="false" onAction="#setLineMode" text="Reta" />
                   <MenuItem fx:id="circButton" mnemonicParsing="false" onAction="#setCircMode" text="Circunferência" />
-                  <MenuItem fx:id="snowButton" mnemonicParsing="false" onAction="#setSnowMode" text="CUCK Snowflake" />
+                  <MenuItem fx:id="snowButton" mnemonicParsing="false" onAction="#setSnowMode" text="Koch Snowflake" />
             </items>
           </Menu>
             <Menu fx:id="colorMenu" mnemonicParsing="false" text="Cores">
@@ -40,12 +38,7 @@
             </Menu>
         </menus>
       </MenuBar>
-      <AnchorPane layoutY="25.0" prefHeight="35.0" prefWidth="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-         <children>
-            <Slider fx:id="diameterSlider" blockIncrement="1.0" layoutX="72.0" layoutY="6.0" majorTickUnit="5.0" max="30.0" min="1.0" prefHeight="24.0" prefWidth="158.0" showTickMarks="true" snapToTicks="true" value="5.0" />
-            <Text layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diametro:" wrappingWidth="57.908203125" />
-         </children>
-      </AnchorPane>
+      <AnchorPane fx:id="optionsBar" layoutY="25.0" prefHeight="35.0" prefWidth="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0" />
       <Separator layoutY="59.0" prefWidth="500.0" />
       <Pane fx:id="canvasPane" layoutY="60.0" prefHeight="460.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
          <children>

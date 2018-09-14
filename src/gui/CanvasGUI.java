@@ -3,6 +3,9 @@ package gui;
 import java.io.IOException;
 
 import abstractions.IShape;
+import abstractions.OptionsPane;
+import gui.optionBars.BasicOptions;
+import gui.optionBars.SnowflakeOptions;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -12,8 +15,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -32,11 +35,11 @@ public class CanvasGUI {
 	@FXML private Menu utilityMenu;
 	@FXML private Menu shapeMenu;
 	@FXML private Menu colorMenu;
-	@FXML private Slider diameterSlider;
 	@FXML private MenuItem snowButton;
 	@FXML private MenuItem lineButton;
 	@FXML private MenuItem circButton;
 	@FXML private MenuItem pointButton;
+	@FXML private AnchorPane optionsBar;
 	@FXML private Pane canvasPane;
 	@FXML private Canvas canvas;
 	
@@ -44,6 +47,7 @@ public class CanvasGUI {
 	private GraphicsContext gc;
 	
 	private Stage stage;
+	private OptionsPane opPane;
 	
 	private int openPoints;
 	private IShape shape;
@@ -73,6 +77,7 @@ public class CanvasGUI {
 		pointButton.setDisable(false);
 		shape = new Snowflake();
 		canvas.setOnMouseClicked(e -> drawShape(e));
+		setOptionsBar("Snowflake");
 	}
 	
 	@FXML
@@ -83,6 +88,7 @@ public class CanvasGUI {
 		pointButton.setDisable(false);
 		shape = new Line();
 		canvas.setOnMouseClicked(e -> drawShape(e));
+		setOptionsBar("Line");
 	}
 	
 	@FXML
@@ -93,6 +99,7 @@ public class CanvasGUI {
 		pointButton.setDisable(false);
 		shape = new Circle();
 		canvas.setOnMouseClicked(e -> drawShape(e));
+		setOptionsBar("Snow");
 	}
 	
 	@FXML
@@ -102,6 +109,7 @@ public class CanvasGUI {
 		circButton.setDisable(false);
 		lineButton.setDisable(false);
 		canvas.setOnMouseClicked(e -> drawPoint(e));
+		setOptionsBar("Point");
 	}
 	
 	@FXML
@@ -150,7 +158,7 @@ public class CanvasGUI {
 		
 		x = (int)e.getX();
 		y = (int)e.getY();
-		Point p = new Point(x, y, diameterSlider.getValue());
+		Point p = new Point(x, y, opPane.getThicknessValue());
 		p.setColor(drawColor);
 		p.drawPoint(gc);
 	}
@@ -163,7 +171,7 @@ public class CanvasGUI {
 		p.drawPoint(gc);
 		setupPoint(p);
 		if(openPoints > 1){
-			shape.draw(gc, drawColor, diameterSlider.getValue());
+			shape.draw(gc, drawColor, opPane.getThicknessValue());
 		}
 		refreshPoint();
 	}
@@ -174,14 +182,14 @@ public class CanvasGUI {
 		x = (int)e.getX();
 		y = (int)e.getY();
 
-		return new Point(x, y, diameterSlider.getValue());
+		return new Point(x, y, opPane.getThicknessValue());
 	}
 	
 	private void setupPoint(Point p){
 		if(openPoints == 0) {
 			shape.setFirstPoint(p);
 			colorMenu.setDisable(true);
-			diameterSlider.setDisable(true);
+			opPane.disableSlider(true);
 			shapeMenu.setDisable(true);
 		}
 		else if(openPoints == 1) {
@@ -194,8 +202,26 @@ public class CanvasGUI {
 		if(openPoints == 2) {
 			openPoints = 0;
 			colorMenu.setDisable(false);
-			diameterSlider.setDisable(false);
+			opPane.disableSlider(false);;
 			shapeMenu.setDisable(false);
 		}
+	}
+	
+	private void setOptionsBar(String shape) {
+		if(shape.equals("Snowflake") == false) {
+			try {
+				opPane = new BasicOptions(optionsBar);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		else {
+			try {
+				opPane = new SnowflakeOptions(optionsBar);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		optionsBar.getChildren().setAll(opPane.getOptionsPane());
 	}
 }
