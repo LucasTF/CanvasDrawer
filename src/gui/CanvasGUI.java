@@ -20,6 +20,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import shapes.Snowflake;
 import shapes.Circle;
 import shapes.Line;
 import shapes.Point;
@@ -32,6 +33,7 @@ public class CanvasGUI {
 	@FXML private Menu shapeMenu;
 	@FXML private Menu colorMenu;
 	@FXML private Slider diameterSlider;
+	@FXML private MenuItem snowButton;
 	@FXML private MenuItem lineButton;
 	@FXML private MenuItem circButton;
 	@FXML private MenuItem pointButton;
@@ -64,8 +66,19 @@ public class CanvasGUI {
 	}
 	
 	@FXML
+	public void setSnowMode() {
+		snowButton.setDisable(true);
+		circButton.setDisable(false);
+		lineButton.setDisable(false);
+		pointButton.setDisable(false);
+		shape = new Snowflake();
+		canvas.setOnMouseClicked(e -> drawShape(e));
+	}
+	
+	@FXML
 	public void setLineMode() {
 		lineButton.setDisable(true);
+		snowButton.setDisable(false);
 		circButton.setDisable(false);
 		pointButton.setDisable(false);
 		shape = new Line();
@@ -75,14 +88,17 @@ public class CanvasGUI {
 	@FXML
 	public void setCircMode() {
 		circButton.setDisable(true);
+		snowButton.setDisable(false);
 		lineButton.setDisable(false);
 		pointButton.setDisable(false);
 		shape = new Circle();
 		canvas.setOnMouseClicked(e -> drawShape(e));
 	}
 	
+	@FXML
 	private void setPointMode() {
 		pointButton.setDisable(true);
+		snowButton.setDisable(false);
 		circButton.setDisable(false);
 		lineButton.setDisable(false);
 		canvas.setOnMouseClicked(e -> drawPoint(e));
@@ -146,8 +162,9 @@ public class CanvasGUI {
 		p.setColor(drawColor);
 		p.drawPoint(gc);
 		setupPoint(p);
-		if(openPoints > 1)
+		if(openPoints > 1){
 			shape.draw(gc, drawColor, diameterSlider.getValue());
+		}
 		refreshPoint();
 	}
 
