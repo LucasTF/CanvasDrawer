@@ -22,8 +22,16 @@ public class Line implements IShape {
 		firstPoint = p;
 	}
 	
+	public Point getFirstPoint() {
+		return this.firstPoint;
+	}
+	
 	public void setLastPoint(Point p) {
 		lastPoint = p;
+	}
+	
+	public Point getLastPoint() {
+		return this.lastPoint;
 	}
 		
 	public void draw(GraphicsContext gc, Color c, double diameter) {

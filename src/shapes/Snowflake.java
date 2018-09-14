@@ -3,6 +3,7 @@ package shapes;
 import abstractions.IShape;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import java.util.ArrayList;
 
 public class Snowflake implements IShape
 {
@@ -11,10 +12,11 @@ public class Snowflake implements IShape
 	private Point tip2;
 	private Point tip3;
 	private Point center;
+	private ArrayList<Line> sides;
 	private GraphicsContext gc;
 	private double diameter;
 	private Color color;
-	private final int iterations = 6;
+	private final int iterations = 4;
 	
 	public Snowflake()
 	{
@@ -25,6 +27,7 @@ public class Snowflake implements IShape
 	public void setFirstPoint(Point p)
 	{
 		this.base = p;
+		this.sides = new ArrayList<Line>();
 	}
 	
 	@Override
@@ -55,24 +58,33 @@ public class Snowflake implements IShape
 		this.diameter = diameter;
 		this.color = c;
 		clearPointsInCanvas(gc, diameter);
-		drawSide(tip1, tip2, 1, this.center);
-		drawSide(tip2, tip3, 1, this.center);
-		drawSide(tip3, tip1, 1, this.center);
-	}
-	
-	private void drawSide(Point start, Point end, int iteration, Point lastMid)
-	{
-		Line side = new Line(start, end);
-		if(iteration == iterations)
+		
+		Line sideA = new Line(tip1, tip2);
+		Line sideB = new Line(tip2, tip3);
+		Line sideC = new Line(tip3, tip1);
+		this.sides.add(sideA);
+		this.sides.add(sideB);
+		this.sides.add(sideC);
+		calcSides(sideA, 2, this.center, this.center);
+		calcSides(sideB, 2, this.center, this.center);
+		calcSides(sideC, 2, this.center, this.center);
+		
+		for(Line side : this.sides)
 		{
 			side.draw(this.gc, this.color, this.diameter);
 		}
-		else
+	}
+	
+	private void calcSides(Line side, int iteration, Point lastMid, Point lastLastMid)
+	{
+		if(iteration <= this.iterations)
 		{
-			Line firstThird = new Line(start, side.getLinePoint(1.0 / 3, this.diameter));
-			Line lastThird = new Line(side.getLinePoint(2.0 / 3, this.diameter), end);
+			this.sides.remove(side); //remove this side from the list as it's replaced with the four new parts 
+
+			Line firstThird = new Line(side.getFirstPoint(), side.getLinePoint(1.0 / 3, this.diameter));
+			Line lastThird = new Line(side.getLinePoint(2.0 / 3, this.diameter), side.getLastPoint());
 			
-			//calculate end-points for next iteration
+			//replace middle third two sides of a triangle
 			Point nextStartL = side.getLinePoint(1.0 / 3, this.diameter);
 			Point nextStartR = side.getLinePoint(2.0 / 3, this.diameter);
 			Point midPoint = side.getLinePoint(1.0 / 2, this.diameter);
@@ -91,9 +103,19 @@ public class Snowflake implements IShape
 			{
 				nextEnd = new Point(nextEndXRvrs, nextEndYRvrs, this.diameter);
 			}
+			Line newMidL = new Line(nextStartL, nextEnd);
+			Line newMidR = new Line(nextStartR, nextEnd);
 			
-			drawSide(nextStartL, nextEnd, iteration + 1, midPoint);
-			drawSide(nextStartR, nextEnd, iteration + 1, midPoint);
+			//add new parts to sides list
+			this.sides.add(firstThird);
+			this.sides.add(lastThird);
+			this.sides.add(newMidL);
+			this.sides.add(newMidR);
+			
+			calcSides(firstThird, iteration + 1, lastMid, lastMid);
+			calcSides(lastThird, iteration + 1, lastMid, lastMid);
+			calcSides(newMidL, iteration + 1, midPoint, lastMid);
+			calcSides(newMidR, iteration + 1, midPoint, lastMid);
 		}
 	}
 	
