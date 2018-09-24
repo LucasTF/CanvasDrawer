@@ -1,0 +1,12 @@
+package enums;
+
+public enum Shapes {
+	POINT,
+	LINE,
+	CIRCLE,
+	SNOWFLAKE,
+	OPENPOLYGON,
+	CLOSEDPOLYGON,
+	RECTANGLE,
+	TRIANGLE;
+}

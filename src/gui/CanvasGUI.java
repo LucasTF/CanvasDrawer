@@ -2,8 +2,9 @@ package gui;
 
 import java.io.IOException;
 
-import abstractions.IShape;
 import abstractions.OptionsPane;
+import app.Drawer;
+import enums.Shapes;
 import gui.optionBars.BasicOptions;
 import gui.optionBars.SnowflakeOptions;
 import javafx.fxml.FXML;
@@ -51,8 +52,7 @@ public class CanvasGUI {
 	private Stage stage;
 	private OptionsPane opPane;
 	
-	private int openPoints;
-	private IShape shape;
+	private Drawer drawer = new Drawer(this);
 
 	public CanvasGUI(Stage stage) throws IOException {
 		this.stage = stage;
@@ -77,9 +77,9 @@ public class CanvasGUI {
 		circButton.setDisable(false);
 		lineButton.setDisable(false);
 		pointButton.setDisable(false);
-		shape = new Snowflake();
-		canvas.setOnMouseClicked(e -> drawShape(e));
-		setOptionsBar("Snowflake");
+		drawer.setShape(new Snowflake());
+		canvas.setOnMouseClicked(e -> drawer.drawShape(e, drawColor, gc, opPane.getThicknessValue(), opPane.getIterationsValue()));
+		setOptionsBar(Shapes.SNOWFLAKE);
 	}
 	
 	@FXML
@@ -88,9 +88,9 @@ public class CanvasGUI {
 		snowButton.setDisable(false);
 		circButton.setDisable(false);
 		pointButton.setDisable(false);
-		shape = new Line();
-		canvas.setOnMouseClicked(e -> drawShape(e));
-		setOptionsBar("Line");
+		drawer.setShape(new Line());
+		canvas.setOnMouseClicked(e -> drawer.drawShape(e, drawColor, gc, opPane.getThicknessValue(), opPane.getIterationsValue()));
+		setOptionsBar(Shapes.LINE);
 	}
 	
 	@FXML
@@ -99,9 +99,9 @@ public class CanvasGUI {
 		snowButton.setDisable(false);
 		lineButton.setDisable(false);
 		pointButton.setDisable(false);
-		shape = new Circle();
-		canvas.setOnMouseClicked(e -> drawShape(e));
-		setOptionsBar("Snow");
+		drawer.setShape(new Circle());
+		canvas.setOnMouseClicked(e -> drawer.drawShape(e, drawColor, gc, opPane.getThicknessValue(), opPane.getIterationsValue()));
+		setOptionsBar(Shapes.CIRCLE);
 	}
 	
 	@FXML
@@ -111,9 +111,9 @@ public class CanvasGUI {
 		lineButton.setDisable(false);
 		pointButton.setDisable(false);
 		openPolygonButton.setDisable(true);
-		shape = new OpenPolygon();
-		canvas.setOnMouseClicked(e -> drawMoreThanTwoPoints(e));
-		setOptionsBar("OpenPolygon");
+		drawer.setShape(new OpenPolygon());
+		canvas.setOnMouseClicked(e -> drawer.drawMoreThanTwoPoints(e, drawColor, gc, opPane.getThicknessValue(), opPane.getIterationsValue()));
+		setOptionsBar(Shapes.OPENPOLYGON);
 	}
 	
 	@FXML
@@ -122,14 +122,14 @@ public class CanvasGUI {
 		snowButton.setDisable(false);
 		circButton.setDisable(false);
 		lineButton.setDisable(false);
-		canvas.setOnMouseClicked(e -> drawPoint(e));
-		setOptionsBar("Point");
+		canvas.setOnMouseClicked(e -> drawer.drawPoint(e, drawColor, gc, opPane.getThicknessValue()));
+		setOptionsBar(Shapes.POINT);
 	}
 	
 	@FXML
 	public void clearCanvas(){
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		openPoints = 0;
+		drawer.setOpenPoints(0);
 	}
 	
 	@FXML
@@ -166,53 +166,8 @@ public class CanvasGUI {
 	public void setColorPink() {
 		drawColor = Color.PINK;
 	}
-	
-	private void drawPoint(MouseEvent e){
-		int x, y;
-		
-		x = (int)e.getX();
-		y = (int)e.getY();
-		Point p = new Point(x, y, opPane.getThicknessValue());
-		p.setColor(drawColor);
-		p.drawPoint(gc);
-	}
-	
-	private void drawShape(MouseEvent e){
 
-		Point p = getPoint(e);
-
-		p.setColor(drawColor);
-		p.drawPoint(gc);
-		setupPoint(p);
-		if(openPoints > 1){
-			shape.draw(gc, drawColor, opPane.getThicknessValue(), opPane.getIterationsValue());
-		}
-		refreshPoint();
-	}
-	
-	private void drawMoreThanTwoPoints(MouseEvent e){
-		
-		Point p;
-		if(openPoints == 0){
-			p = getPoint(e);
-			p.setColor(drawColor);
-			p.drawPoint(gc);
-			shape.setFirstPoint(p);
-			openPoints++;
-		}
-		else{
-			p = getPoint(e);
-			p.setColor(drawColor);
-			p.drawPoint(gc);
-			shape.setLastPoint(p);
-			shape.draw(gc, drawColor, opPane.getThicknessValue(), opPane.getIterationsValue());
-			colorMenu.setDisable(false);
-			opPane.disableSlider(false);;
-			shapeMenu.setDisable(false);
-		}
-	}
-
-	private Point getPoint(MouseEvent e){
+	public Point getPoint(MouseEvent e){
 		int x, y;
 
 		x = (int)e.getX();
@@ -221,30 +176,8 @@ public class CanvasGUI {
 		return new Point(x, y, opPane.getThicknessValue());
 	}
 	
-	private void setupPoint(Point p){
-		if(openPoints == 0) {
-			shape.setFirstPoint(p);
-			colorMenu.setDisable(true);
-			opPane.disableSlider(true);
-			shapeMenu.setDisable(true);
-		}
-		else if(openPoints == 1) {
-			shape.setLastPoint(p);
-		}
-		openPoints++;
-	}
-	
-	private void refreshPoint(){
-		if(openPoints == 2) {
-			openPoints = 0;
-			colorMenu.setDisable(false);
-			opPane.disableSlider(false);;
-			shapeMenu.setDisable(false);
-		}
-	}
-	
-	private void setOptionsBar(String shape) {
-		if(shape.equals("Snowflake") == false) {
+	private void setOptionsBar(Shapes shape) {
+		if(shape.equals(Shapes.SNOWFLAKE) == false) {
 			try {
 				opPane = new BasicOptions(optionsBar);
 			} catch (IOException e1) {
@@ -259,5 +192,11 @@ public class CanvasGUI {
 			}
 		}
 		optionsBar.getChildren().setAll(opPane.getOptionsPane());
+	}
+	
+	public void disableMenus(boolean disable) {
+		colorMenu.setDisable(disable);
+		opPane.disableSlider(disable);
+		shapeMenu.setDisable(disable);
 	}
 }
