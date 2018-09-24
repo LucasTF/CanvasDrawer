@@ -34,7 +34,7 @@ public class Line implements IShape {
 		return this.lastPoint;
 	}
 		
-	public void draw(GraphicsContext gc, Color c, double diameter) {
+	public void draw(GraphicsContext gc, Color c, double diameter, double iterations) {
 		Point p;
 		double deltaX, deltaY;
 		int steps;

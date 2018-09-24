@@ -16,7 +16,7 @@ public class Snowflake implements IShape
 	private GraphicsContext gc;
 	private double diameter;
 	private Color color;
-	private final int iterations = 4;
+	private int iterations = 5;
 	
 	public Snowflake()
 	{
@@ -52,11 +52,12 @@ public class Snowflake implements IShape
 	}
 	
 	@Override
-	public void draw(GraphicsContext gc, Color c, double diameter)
+	public void draw(GraphicsContext gc, Color c, double diameter, double iterations)
 	{
 		this.gc = gc;
 		this.diameter = diameter;
 		this.color = c;
+		this.iterations = (int) iterations;
 		clearPointsInCanvas(gc, diameter);
 		
 		Line sideA = new Line(tip1, tip2);
@@ -71,7 +72,7 @@ public class Snowflake implements IShape
 		
 		for(Line side : this.sides)
 		{
-			side.draw(this.gc, this.color, this.diameter);
+			side.draw(this.gc, this.color, this.diameter, this.iterations);
 		}
 	}
 	

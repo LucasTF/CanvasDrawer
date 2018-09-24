@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import shapes.Snowflake;
 import shapes.Circle;
 import shapes.Line;
+import shapes.OpenPolygon;
 import shapes.Point;
 
 public class CanvasGUI {
@@ -39,6 +40,7 @@ public class CanvasGUI {
 	@FXML private MenuItem lineButton;
 	@FXML private MenuItem circButton;
 	@FXML private MenuItem pointButton;
+	@FXML private MenuItem openPolygonButton;
 	@FXML private AnchorPane optionsBar;
 	@FXML private Pane canvasPane;
 	@FXML private Canvas canvas;
@@ -100,6 +102,18 @@ public class CanvasGUI {
 		shape = new Circle();
 		canvas.setOnMouseClicked(e -> drawShape(e));
 		setOptionsBar("Snow");
+	}
+	
+	@FXML
+	public void setOpenPolygonMode() {
+		circButton.setDisable(false);
+		snowButton.setDisable(false);
+		lineButton.setDisable(false);
+		pointButton.setDisable(false);
+		openPolygonButton.setDisable(true);
+		shape = new OpenPolygon();
+		canvas.setOnMouseClicked(e -> drawMoreThanTwoPoints(e));
+		setOptionsBar("OpenPolygon");
 	}
 	
 	@FXML
@@ -171,9 +185,31 @@ public class CanvasGUI {
 		p.drawPoint(gc);
 		setupPoint(p);
 		if(openPoints > 1){
-			shape.draw(gc, drawColor, opPane.getThicknessValue());
+			shape.draw(gc, drawColor, opPane.getThicknessValue(), opPane.getIterationsValue());
 		}
 		refreshPoint();
+	}
+	
+	private void drawMoreThanTwoPoints(MouseEvent e){
+		
+		Point p;
+		if(openPoints == 0){
+			p = getPoint(e);
+			p.setColor(drawColor);
+			p.drawPoint(gc);
+			shape.setFirstPoint(p);
+			openPoints++;
+		}
+		else{
+			p = getPoint(e);
+			p.setColor(drawColor);
+			p.drawPoint(gc);
+			shape.setLastPoint(p);
+			shape.draw(gc, drawColor, opPane.getThicknessValue(), opPane.getIterationsValue());
+			colorMenu.setDisable(false);
+			opPane.disableSlider(false);;
+			shapeMenu.setDisable(false);
+		}
 	}
 
 	private Point getPoint(MouseEvent e){

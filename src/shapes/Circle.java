@@ -30,13 +30,11 @@ public class Circle implements IShape {
 	}
 
 	@Override
-	public void draw(GraphicsContext gc, Color c, double diameter) {
+	public void draw(GraphicsContext gc, Color c, double diameter, double iterations) {
 
 		clearPointsInCanvas(gc, diameter);
 
 		drawCircle(gc, c, diameter);
-
-		System.out.println("teste");
 	}
 
 	// TODO: Create a formula to detect the angle steps based on the radius size. This will prevent big circles from

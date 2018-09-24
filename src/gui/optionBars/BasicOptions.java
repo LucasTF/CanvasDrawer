@@ -13,4 +13,9 @@ public class BasicOptions extends OptionsPane{
 		super(parent, fxml);
 	}
 
+	@Override
+	public double getIterationsValue() {
+		return 0;
+	}
+
 }

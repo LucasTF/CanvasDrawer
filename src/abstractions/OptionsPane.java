@@ -30,5 +30,7 @@ public abstract class OptionsPane {
 	public void disableSlider(boolean x) {
 		diameterSlider.setDisable(x);
 	}
+	
+	public abstract double getIterationsValue();
 
 }

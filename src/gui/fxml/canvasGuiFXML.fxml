@@ -23,6 +23,7 @@
                   <MenuItem fx:id="lineButton" mnemonicParsing="false" onAction="#setLineMode" text="Reta" />
                   <MenuItem fx:id="circButton" mnemonicParsing="false" onAction="#setCircMode" text="Circunferência" />
                   <MenuItem fx:id="snowButton" mnemonicParsing="false" onAction="#setSnowMode" text="Koch Snowflake" />
+                  <MenuItem fx:id="openPolygonButton" mnemonicParsing="false" onAction="#setOpenPolygonMode" text="Poligono Aberto" />
             </items>
           </Menu>
             <Menu fx:id="colorMenu" mnemonicParsing="false" text="Cores">
