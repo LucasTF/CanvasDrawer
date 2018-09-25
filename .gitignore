@@ -58,3 +58,4 @@ local.properties
 # IntelliJ IDEA files
 .idea/*
 CanvasDrawer.iml
+.classpath
