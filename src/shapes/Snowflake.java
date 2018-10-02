@@ -41,12 +41,12 @@ public class Snowflake implements IShape
 		double tip1X = p.getPoint().getX();
 		double tip1Y = p.getPoint().getY();
 		
-		int tip2X = Math.toIntExact(Math.round(baseX + (tip1Y - baseY) / 2));
-		int tip2Y = Math.toIntExact(Math.round(baseY - (tip1X - baseX) / 2));
+		int tip2X = Math.toIntExact(Math.round(baseX + (tip1Y - baseY) / Math.sqrt(3)));
+		int tip2Y = Math.toIntExact(Math.round(baseY - (tip1X - baseX) / Math.sqrt(3)));
 		tip2 = new Point(tip2X, tip2Y, tip1.getDiameter());
 		
-		int tip3X = Math.toIntExact(Math.round(baseX - (tip1Y - baseY) / 2));
-		int tip3Y = Math.toIntExact(Math.round(baseY + (tip1X - baseX) / 2));
+		int tip3X = Math.toIntExact(Math.round(baseX - (tip1Y - baseY) / Math.sqrt(3)));
+		int tip3Y = Math.toIntExact(Math.round(baseY + (tip1X - baseX) / Math.sqrt(3)));
 		tip3 = new Point(tip3X, tip3Y, tip1.getDiameter());
 		
 		this.center = new Point(Math.toIntExact(Math.round((baseX + tip1X) / 2)), Math.toIntExact(Math.round((baseY + tip1Y) / 2)), tip1.getDiameter());
@@ -92,10 +92,10 @@ public class Snowflake implements IShape
 			Point midPoint = side.getLinePoint(1.0 / 2, this.diameter);
 			double midPointX = midPoint.getPoint().getX();
 			double midPointY = midPoint.getPoint().getY();
-			int nextEndX = Math.toIntExact(Math.round(midPointX - (midPointY - side.getLinePoint(1.0 / 3, this.diameter).getPoint().getY()) * 2));
-			int nextEndY = Math.toIntExact(Math.round(midPointY + (midPointX - side.getLinePoint(1.0 / 3, this.diameter).getPoint().getX()) * 2));
-			int nextEndXRvrs = Math.toIntExact(Math.round(midPointX + (midPointY - side.getLinePoint(1.0 / 3, this.diameter).getPoint().getY()) * 2));
-			int nextEndYRvrs = Math.toIntExact(Math.round(midPointY - (midPointX - side.getLinePoint(1.0 / 3, this.diameter).getPoint().getX()) * 2));
+			int nextEndX = Math.toIntExact(Math.round(midPointX - (midPointY - nextStartL.getPoint().getY()) * Math.sqrt(3)));
+			int nextEndY = Math.toIntExact(Math.round(midPointY + (midPointX - nextStartL.getPoint().getX()) * Math.sqrt(3)));
+			int nextEndXRvrs = Math.toIntExact(Math.round(midPointX + (midPointY - nextStartL.getPoint().getY()) * Math.sqrt(3)));
+			int nextEndYRvrs = Math.toIntExact(Math.round(midPointY - (midPointX - nextStartL.getPoint().getX()) * Math.sqrt(3)));
 			Point nextEnd;
 			if(Math.sqrt(Math.pow(nextEndX - lastMid.getPoint().getX(), 2) + Math.pow(nextEndY - lastMid.getPoint().getY(), 2)) > Math.sqrt(Math.pow(nextEndXRvrs - lastMid.getPoint().getX(), 2) + Math.pow(nextEndYRvrs - lastMid.getPoint().getY(), 2)))
 			{
