@@ -1,7 +1,7 @@
 package shapes;
 
 import abstractions.IShape;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
 public class OpenPolygon implements IShape{
@@ -27,8 +27,8 @@ public class OpenPolygon implements IShape{
 	}
 
 	@Override
-	public void draw(GraphicsContext gc, Color c, double diameter, double iterations) {
-		lines.draw(gc,c,diameter,iterations);
+	public void draw(Canvas gv, Color c, double diameter, double iterations) {
+		lines.draw(gv,c,diameter,iterations);
 		setFirstPoint(this.lastPoint);
 	}
 	

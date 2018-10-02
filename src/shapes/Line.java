@@ -1,7 +1,7 @@
 package shapes;
 
 import abstractions.IShape;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
 public class Line implements IShape {
@@ -34,7 +34,7 @@ public class Line implements IShape {
 		return this.lastPoint;
 	}
 		
-	public void draw(GraphicsContext gc, Color c, double diameter, double iterations) {
+	public void draw(Canvas cv, Color c, double diameter, double iterations) {
 		Point p;
 		double deltaX, deltaY;
 		int steps;
@@ -56,11 +56,11 @@ public class Line implements IShape {
 			y = y + yIncrement;
 			p = new Point((int) x, (int) y, diameter);
 			p.setColor(c);
-			p.drawPoint(gc);
+			p.drawPoint(cv.getGraphicsContext2D());
 		}
 	}
 	
-	public Point getLinePoint(double dec, double diameter) //gets a point along the line proportional to the decimal
+	public Point getLinePoint(double dec, double diameter)
 	{
 		double deltaX = lastPoint.getPoint().getX() - firstPoint.getPoint().getX();
 		double deltaY = lastPoint.getPoint().getY() - firstPoint.getPoint().getY();

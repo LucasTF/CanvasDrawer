@@ -1,6 +1,7 @@
 package shapes;
 
 import abstractions.IShape;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -30,15 +31,13 @@ public class Circle implements IShape {
 	}
 
 	@Override
-	public void draw(GraphicsContext gc, Color c, double diameter, double iterations) {
+	public void draw(Canvas cv, Color c, double diameter, double iterations) {
 
-		clearPointsInCanvas(gc, diameter);
+		clearPointsInCanvas(cv.getGraphicsContext2D(), diameter);
 
-		drawCircle(gc, c, diameter);
+		drawCircle(cv.getGraphicsContext2D(), c, diameter);
 	}
-
-	// TODO: Create a formula to detect the angle steps based on the radius size. This will prevent big circles from
-	// TODO: being shattered and small circles from being all clustered.
+	
 	private void drawCircle(GraphicsContext gc, Color c, double diameter){
 		int radius = (int) Math.sqrt(getXForRadius() + getYForRadius());
 		drawCornerPoints(gc, c, diameter, radius);

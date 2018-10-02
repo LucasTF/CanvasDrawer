@@ -2,7 +2,7 @@ package app;
 
 import abstractions.IShape;
 import gui.CanvasGUI;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import shapes.Point;
@@ -11,70 +11,67 @@ public class Drawer {
 	
 	private int openPoints;
 	private IShape shape;
-	private CanvasGUI canvas;
+	private CanvasGUI drawingWindow;
 	
-	public Drawer(CanvasGUI canvas) {
-		this.canvas = canvas;
+	public Drawer(CanvasGUI dw) {
+		this.drawingWindow = dw;
 	}
 	
-	public void drawShape(MouseEvent e, Color drawColor, GraphicsContext gc, double thickness, double iterations){
+	public void drawShape(MouseEvent e, Color drawColor, Canvas c, double thickness, double iterations){
 
-		Point p = canvas.getPoint(e);
-
+		Point p = drawingWindow.getPoint(e);
 		p.setColor(drawColor);
-		p.drawPoint(gc);
-		setupPoint(p);
-		if(openPoints > 1){
-			shape.draw(gc, drawColor, thickness, iterations);
+		p.drawPoint(c.getGraphicsContext2D());
+		if(openPoints == 0) {
+			shape.setFirstPoint(p);
+			drawingWindow.disableMenus(true);
+			c.setOnMouseMoved(em ->{
+				drawingWindow.clearCanvas(c);
+				Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
+				if(openPoints == 1) {
+					shape.draw(c, drawingWindow.background, thickness+2, iterations);
+				}
+				shape.setLastPoint(l);
+				shape.draw(c, drawColor, thickness, iterations);
+				c.setOnMouseClicked(ex -> {
+					openPoints = 0;
+					c.setOnMouseMoved(null);
+					drawingWindow.importToMainCanvas(shape);
+					c.setDisable(true);
+					drawingWindow.disableMenus(false);
+				});
+				if(openPoints == 0) openPoints++;
+			});
 		}
-		refreshPoint();
 	}
 	
-	public void drawPoint(MouseEvent e, Color drawColor, GraphicsContext gc, double thickness){
+	public void drawPoint(MouseEvent e, Color drawColor, Canvas c, double thickness){
 		int x, y;
 		
 		x = (int)e.getX();
 		y = (int)e.getY();
 		Point p = new Point(x, y, thickness);
 		p.setColor(drawColor);
-		p.drawPoint(gc);
+		p.drawPoint(c.getGraphicsContext2D());
 	}
 	
-	public void drawMoreThanTwoPoints(MouseEvent e, Color drawColor, GraphicsContext gc, double thickness, double iterations){
+	public void drawMoreThanTwoPoints(MouseEvent e, Color drawColor, Canvas c, double thickness, double iterations){
 		
 		Point p;
 		if(openPoints == 0){
-			p = canvas.getPoint(e);
+			p = drawingWindow.getPoint(e);
 			p.setColor(drawColor);
-			p.drawPoint(gc);
+			p.drawPoint(c.getGraphicsContext2D());
 			shape.setFirstPoint(p);
 			openPoints++;
 		}
 		else{
-			p = canvas.getPoint(e);
+			p = drawingWindow.getPoint(e);
 			p.setColor(drawColor);
-			p.drawPoint(gc);
+			p.drawPoint(c.getGraphicsContext2D());
 			shape.setLastPoint(p);
-			shape.draw(gc, drawColor, thickness, iterations);
-			canvas.disableMenus(false);
-		}
-	}
-	
-	private void setupPoint(Point p){
-		if(openPoints == 0) {
-			shape.setFirstPoint(p);
-			canvas.disableMenus(true);
-		}
-		else if(openPoints == 1) {
-			shape.setLastPoint(p);
-		}
-		openPoints++;
-	}
-	
-	private void refreshPoint(){
-		if(openPoints == 2) {
-			openPoints = 0;
-			canvas.disableMenus(false);
+			shape.draw(c, drawColor, thickness, iterations);
+			drawingWindow.disableMenus(false);
 		}
 	}
 	

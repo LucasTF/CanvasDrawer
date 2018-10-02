@@ -6,7 +6,7 @@
 
 <AnchorPane fx:id="optionsPane" prefHeight="35.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Slider fx:id="diameterSlider" blockIncrement="1.0" layoutX="72.0" layoutY="6.0" majorTickUnit="5.0" max="30.0" min="1.0" prefHeight="24.0" prefWidth="158.0" showTickMarks="true" snapToTicks="true" value="5.0" />
+      <Slider fx:id="diameterSlider" blockIncrement="1.0" layoutX="72.0" layoutY="6.0" majorTickUnit="5.0" max="30.0" min="1.0" prefHeight="24.0" prefWidth="158.0" showTickMarks="true" snapToTicks="true" value="2.0" />
       <Text layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Espessura:" wrappingWidth="57.908203125" />
    </children>
 </AnchorPane>

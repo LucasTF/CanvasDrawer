@@ -2,6 +2,7 @@ package gui;
 
 import java.io.IOException;
 
+import abstractions.IShape;
 import abstractions.OptionsPane;
 import app.Drawer;
 import enums.Shapes;
@@ -13,7 +14,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
@@ -33,24 +33,28 @@ import shapes.Point;
 public class CanvasGUI {
 	
 	private static final String fxml = "fxml/CanvasGuiFXML.fxml";
+	public final Color background = Color.AZURE;
 	
 	@FXML private Menu utilityMenu;
-	@FXML private Menu shapeMenu;
 	@FXML private Menu colorMenu;
+	
+	@FXML private Menu shapeMenu;
 	@FXML private MenuItem snowButton;
 	@FXML private MenuItem lineButton;
 	@FXML private MenuItem circButton;
 	@FXML private MenuItem pointButton;
 	@FXML private MenuItem openPolygonButton;
 	@FXML private AnchorPane optionsBar;
+	
 	@FXML private Pane canvasPane;
-	@FXML private Canvas canvas;
+	@FXML private Canvas mainCanvas;
+	@FXML private Canvas drawingCanvas;
 	
 	public Color drawColor = Color.BLACK;
-	private GraphicsContext gc;
 	
 	private Stage stage;
 	private OptionsPane opPane;
+	private Shapes selectedShape;
 	
 	private Drawer drawer = new Drawer(this);
 
@@ -60,13 +64,11 @@ public class CanvasGUI {
 		loader.setController(this);
 		Parent root = loader.load();
 		this.stage.setScene(new Scene(root));
-		canvasPane.setBackground(new Background(new BackgroundFill(Color.AZURE, CornerRadii.EMPTY, Insets.EMPTY)));
+		canvasPane.setBackground(new Background(new BackgroundFill(background, CornerRadii.EMPTY, Insets.EMPTY)));
 		stage.setTitle("Canvas");
 		stage.setResizable(false);
 		stage.sizeToScene();
 		stage.show();
-		
-		gc = canvas.getGraphicsContext2D();
 		pointButton.setOnAction(e -> setPointMode());
 		setPointMode();
 	}
@@ -78,8 +80,9 @@ public class CanvasGUI {
 		lineButton.setDisable(false);
 		pointButton.setDisable(false);
 		drawer.setShape(new Snowflake());
-		canvas.setOnMouseClicked(e -> drawer.drawShape(e, drawColor, gc, opPane.getThicknessValue(), opPane.getIterationsValue()));
-		setOptionsBar(Shapes.SNOWFLAKE);
+		selectedShape = Shapes.SNOWFLAKE;
+		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
+		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
@@ -89,8 +92,9 @@ public class CanvasGUI {
 		circButton.setDisable(false);
 		pointButton.setDisable(false);
 		drawer.setShape(new Line());
-		canvas.setOnMouseClicked(e -> drawer.drawShape(e, drawColor, gc, opPane.getThicknessValue(), opPane.getIterationsValue()));
-		setOptionsBar(Shapes.LINE);
+		selectedShape = Shapes.LINE;
+		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
+		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
@@ -100,8 +104,9 @@ public class CanvasGUI {
 		lineButton.setDisable(false);
 		pointButton.setDisable(false);
 		drawer.setShape(new Circle());
-		canvas.setOnMouseClicked(e -> drawer.drawShape(e, drawColor, gc, opPane.getThicknessValue(), opPane.getIterationsValue()));
-		setOptionsBar(Shapes.CIRCLE);
+		selectedShape = Shapes.CIRCLE;
+		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
+		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
@@ -112,8 +117,9 @@ public class CanvasGUI {
 		pointButton.setDisable(false);
 		openPolygonButton.setDisable(true);
 		drawer.setShape(new OpenPolygon());
-		canvas.setOnMouseClicked(e -> drawer.drawMoreThanTwoPoints(e, drawColor, gc, opPane.getThicknessValue(), opPane.getIterationsValue()));
-		setOptionsBar(Shapes.OPENPOLYGON);
+		selectedShape = Shapes.OPENPOLYGON;
+		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
+		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
@@ -122,14 +128,55 @@ public class CanvasGUI {
 		snowButton.setDisable(false);
 		circButton.setDisable(false);
 		lineButton.setDisable(false);
-		canvas.setOnMouseClicked(e -> drawer.drawPoint(e, drawColor, gc, opPane.getThicknessValue()));
-		setOptionsBar(Shapes.POINT);
+		selectedShape = Shapes.POINT;
+		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
+		setOptionsBar(selectedShape);
+	}
+	
+	private void setDrawingEnvironment(MouseEvent e) {
+		switch(selectedShape) {
+		case POINT:
+			drawer.drawPoint(e, drawColor, mainCanvas, opPane.getThicknessValue());
+			break;
+		case LINE:
+		case CIRCLE:
+		case SNOWFLAKE:
+			drawingCanvas.setDisable(false);
+			drawer.drawShape(e, drawColor, drawingCanvas, opPane.getThicknessValue(), opPane.getIterationsValue());
+			break;
+		case OPENPOLYGON:
+			// May not work. Needs to be refined.
+			drawingCanvas.setDisable(false);
+			drawer.drawMoreThanTwoPoints(e, drawColor, drawingCanvas, opPane.getThicknessValue(), opPane.getIterationsValue());
+			break;
+		case RECTANGLE:
+			// To be Implemented
+			break;
+		case CLOSEDPOLYGON:
+			// To be Implemented
+			break;
+		case TRIANGLE:
+			// To be Implemented
+			break;
+		default:
+			break;
+		
+		}
+	}
+	
+	public void importToMainCanvas(IShape drawedShape) {
+		drawedShape.draw(mainCanvas, drawColor, opPane.getThicknessValue(), opPane.getIterationsValue());
+		clearCanvas(drawingCanvas);
+	}
+	
+	public void clearCanvas(Canvas c) {
+		c.getGraphicsContext2D().clearRect(0, 0, c.getWidth(), c.getHeight());
+		drawer.setOpenPoints(0);
 	}
 	
 	@FXML
-	public void clearCanvas(){
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		drawer.setOpenPoints(0);
+	private void clearMainCanvas(){
+		clearCanvas(mainCanvas);
 	}
 	
 	@FXML
@@ -174,6 +221,10 @@ public class CanvasGUI {
 		y = (int)e.getY();
 
 		return new Point(x, y, opPane.getThicknessValue());
+	}
+	
+	public Shapes getSelectedShape() {
+		return selectedShape;
 	}
 	
 	private void setOptionsBar(Shapes shape) {

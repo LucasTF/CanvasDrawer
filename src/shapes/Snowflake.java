@@ -1,6 +1,7 @@
 package shapes;
 
 import abstractions.IShape;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
@@ -52,9 +53,9 @@ public class Snowflake implements IShape
 	}
 	
 	@Override
-	public void draw(GraphicsContext gc, Color c, double diameter, double iterations)
+	public void draw(Canvas gv, Color c, double diameter, double iterations)
 	{
-		this.gc = gc;
+		this.gc = gv.getGraphicsContext2D();
 		this.diameter = diameter;
 		this.color = c;
 		this.iterations = (int) iterations;
@@ -72,7 +73,7 @@ public class Snowflake implements IShape
 		
 		for(Line side : this.sides)
 		{
-			side.draw(this.gc, this.color, this.diameter, this.iterations);
+			side.draw(gv, this.color, this.diameter, this.iterations);
 		}
 	}
 	

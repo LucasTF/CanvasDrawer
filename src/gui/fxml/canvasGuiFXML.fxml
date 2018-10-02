@@ -14,7 +14,7 @@
         <menus>
             <Menu fx:id="utilityMenu" mnemonicParsing="false" text="Utilidades">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#clearCanvas" text="Limpar tela" />
+                <MenuItem mnemonicParsing="false" onAction="#clearMainCanvas" text="Limpar tela" />
               </items>
             </Menu>
           <Menu fx:id="shapeMenu" mnemonicParsing="false" text="Formas">
@@ -22,7 +22,7 @@
               <MenuItem fx:id="pointButton" mnemonicParsing="false" text="Ponto" />
                   <MenuItem fx:id="lineButton" mnemonicParsing="false" onAction="#setLineMode" text="Reta" />
                   <MenuItem fx:id="circButton" mnemonicParsing="false" onAction="#setCircMode" text="Circunferência" />
-                  <MenuItem fx:id="snowButton" mnemonicParsing="false" onAction="#setSnowMode" text="Koch Snowflake" />
+                  <MenuItem fx:id="snowButton" mnemonicParsing="false" onAction="#setSnowMode" text="Koch Snowflake" visible="false" />
                   <MenuItem fx:id="openPolygonButton" mnemonicParsing="false" onAction="#setOpenPolygonMode" text="Poligono Aberto" />
             </items>
           </Menu>
@@ -43,7 +43,8 @@
       <Separator layoutY="59.0" prefWidth="500.0" />
       <Pane fx:id="canvasPane" layoutY="60.0" prefHeight="460.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
          <children>
-            <Canvas fx:id="canvas" height="460.0" width="500.0" />
+            <Canvas fx:id="mainCanvas" height="460.0" width="500.0" />
+            <Canvas fx:id="drawingCanvas" disable="true" height="460.0" width="500.0" />
          </children>
       </Pane>
    </children>
