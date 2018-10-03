@@ -4,13 +4,13 @@ import abstractions.IShape;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
-public class OpenPolygon implements IShape{
+public class PolygonalLine implements IShape{
 	
 	private Point firstPoint;
 	private Point lastPoint;
 	private Line lines;
 	
-	public OpenPolygon(){
+	public PolygonalLine(){
 		lines = new Line();
 	}
 
@@ -29,7 +29,16 @@ public class OpenPolygon implements IShape{
 	@Override
 	public void draw(Canvas gv, Color c, double diameter, double iterations) {
 		lines.draw(gv,c,diameter,iterations);
-		setFirstPoint(this.lastPoint);
+	}
+
+	@Override
+	public Point getFirstPoint() {
+		return firstPoint;
+	}
+
+	@Override
+	public Point getLastPoint() {
+		return lastPoint;
 	}
 	
 }

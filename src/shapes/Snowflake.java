@@ -134,4 +134,14 @@ public class Snowflake implements IShape
 		gc.clearRect(base.getPoint().getX() - diameter/2, base.getPoint().getY() - diameter/2, diameter,
 				diameter);
 	}
+
+	@Override
+	public Point getFirstPoint() {
+		return base;
+	}
+
+	@Override
+	public Point getLastPoint() {
+		return center;
+	}
 }

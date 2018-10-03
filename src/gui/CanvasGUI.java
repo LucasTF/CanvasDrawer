@@ -5,7 +5,7 @@ import java.io.IOException;
 import abstractions.IShape;
 import abstractions.OptionsPane;
 import app.Drawer;
-import enums.Shapes;
+import enums.ShapeType;
 import gui.optionBars.BasicOptions;
 import gui.optionBars.SnowflakeOptions;
 import javafx.fxml.FXML;
@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 import shapes.Snowflake;
 import shapes.Circle;
 import shapes.Line;
-import shapes.OpenPolygon;
+import shapes.PolygonalLine;
 import shapes.Point;
 
 public class CanvasGUI {
@@ -43,7 +43,7 @@ public class CanvasGUI {
 	@FXML private MenuItem lineButton;
 	@FXML private MenuItem circButton;
 	@FXML private MenuItem pointButton;
-	@FXML private MenuItem openPolygonButton;
+	@FXML private MenuItem polygonalLineButton;
 	@FXML private AnchorPane optionsBar;
 	
 	@FXML private Pane canvasPane;
@@ -54,7 +54,7 @@ public class CanvasGUI {
 	
 	private Stage stage;
 	private OptionsPane opPane;
-	private Shapes selectedShape;
+	private ShapeType selectedShape;
 	
 	private Drawer drawer = new Drawer(this);
 
@@ -65,70 +65,60 @@ public class CanvasGUI {
 		Parent root = loader.load();
 		this.stage.setScene(new Scene(root));
 		canvasPane.setBackground(new Background(new BackgroundFill(background, CornerRadii.EMPTY, Insets.EMPTY)));
-		stage.setTitle("Canvas");
+		stage.setTitle("Canvas Drawer");
 		stage.setResizable(false);
 		stage.sizeToScene();
 		stage.show();
+		mainCanvas.setOnMouseMoved(e -> stage.setTitle("Canvas Drawer - (" + (int) e.getX() + " , " + (int) e.getY() + ")"));
 		pointButton.setOnAction(e -> setPointMode());
 		setPointMode();
 	}
 	
 	@FXML
 	public void setSnowMode() {
+		disableShapeOptions(false);
 		snowButton.setDisable(true);
-		circButton.setDisable(false);
-		lineButton.setDisable(false);
-		pointButton.setDisable(false);
 		drawer.setShape(new Snowflake());
-		selectedShape = Shapes.SNOWFLAKE;
+		selectedShape = ShapeType.SNOWFLAKE;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
 	public void setLineMode() {
+		disableShapeOptions(false);
 		lineButton.setDisable(true);
-		snowButton.setDisable(false);
-		circButton.setDisable(false);
-		pointButton.setDisable(false);
 		drawer.setShape(new Line());
-		selectedShape = Shapes.LINE;
+		selectedShape = ShapeType.LINE;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
 	public void setCircMode() {
+		disableShapeOptions(false);
 		circButton.setDisable(true);
-		snowButton.setDisable(false);
-		lineButton.setDisable(false);
-		pointButton.setDisable(false);
 		drawer.setShape(new Circle());
-		selectedShape = Shapes.CIRCLE;
+		selectedShape = ShapeType.CIRCLE;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
-	public void setOpenPolygonMode() {
-		circButton.setDisable(false);
-		snowButton.setDisable(false);
-		lineButton.setDisable(false);
-		pointButton.setDisable(false);
-		openPolygonButton.setDisable(true);
-		drawer.setShape(new OpenPolygon());
-		selectedShape = Shapes.OPENPOLYGON;
+	public void setPolygonalLineMode() {
+		disableShapeOptions(false);
+		polygonalLineButton.setDisable(true);
+		drawer.setShape(new PolygonalLine());
+		selectedShape = ShapeType.POLYGONALLINE;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
 	private void setPointMode() {
+		disableShapeOptions(false);
 		pointButton.setDisable(true);
-		snowButton.setDisable(false);
-		circButton.setDisable(false);
-		lineButton.setDisable(false);
-		selectedShape = Shapes.POINT;
+		selectedShape = ShapeType.POINT;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
 	}
@@ -139,15 +129,19 @@ public class CanvasGUI {
 			drawer.drawPoint(e, drawColor, mainCanvas, opPane.getThicknessValue());
 			break;
 		case LINE:
-		case CIRCLE:
-		case SNOWFLAKE:
 			drawingCanvas.setDisable(false);
-			drawer.drawShape(e, drawColor, drawingCanvas, opPane.getThicknessValue(), opPane.getIterationsValue());
+			drawer.drawLine(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
-		case OPENPOLYGON:
-			// May not work. Needs to be refined.
+		case CIRCLE:
 			drawingCanvas.setDisable(false);
-			drawer.drawMoreThanTwoPoints(e, drawColor, drawingCanvas, opPane.getThicknessValue(), opPane.getIterationsValue());
+			drawer.drawCircle(e, drawColor, drawingCanvas, opPane.getThicknessValue());
+			break;
+		case SNOWFLAKE:
+			// Needs Legacy Drawing to Work
+			break;
+		case POLYGONALLINE:
+			drawingCanvas.setDisable(false);
+			drawer.drawPolygonalLine(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
 		case RECTANGLE:
 			// To be Implemented
@@ -223,12 +217,18 @@ public class CanvasGUI {
 		return new Point(x, y, opPane.getThicknessValue());
 	}
 	
-	public Shapes getSelectedShape() {
+	public ShapeType getSelectedShape() {
 		return selectedShape;
 	}
 	
-	private void setOptionsBar(Shapes shape) {
-		if(shape.equals(Shapes.SNOWFLAKE) == false) {
+	private void disableShapeOptions(boolean d) {
+		for(MenuItem i : shapeMenu.getItems()) {
+			i.setDisable(d);
+		}
+	}
+	
+	private void setOptionsBar(ShapeType shape) {
+		if(shape.equals(ShapeType.SNOWFLAKE) == false) {
 			try {
 				opPane = new BasicOptions(optionsBar);
 			} catch (IOException e1) {

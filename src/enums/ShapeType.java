@@ -1,11 +1,11 @@
 package enums;
 
-public enum Shapes {
+public enum ShapeType {
 	POINT,
 	LINE,
 	CIRCLE,
 	SNOWFLAKE,
-	OPENPOLYGON,
+	POLYGONALLINE,
 	CLOSEDPOLYGON,
 	RECTANGLE,
 	TRIANGLE;

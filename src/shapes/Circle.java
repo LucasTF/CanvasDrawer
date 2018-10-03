@@ -94,4 +94,14 @@ public class Circle implements IShape {
 	private int getYForDraw(double calculatedY){
 		return (int) (calculatedY +  center.getPoint().getY());
 	}
+
+	@Override
+	public Point getFirstPoint() {
+		return center;
+	}
+
+	@Override
+	public Point getLastPoint() {
+		return circPoint;
+	}
 }
