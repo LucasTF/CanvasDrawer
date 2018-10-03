@@ -6,8 +6,6 @@ import abstractions.IShape;
 import abstractions.OptionsPane;
 import app.Drawer;
 import enums.ShapeType;
-import gui.optionBars.BasicOptions;
-import gui.optionBars.SnowflakeOptions;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -32,7 +30,7 @@ import shapes.Point;
 
 public class CanvasGUI {
 	
-	private static final String fxml = "fxml/CanvasGuiFXML.fxml";
+	private static final String fxml = "fxml/canvasGuiFXML.fxml";
 	public final Color background = Color.AZURE;
 	
 	@FXML private Menu utilityMenu;

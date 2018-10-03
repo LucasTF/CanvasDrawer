@@ -1,4 +1,4 @@
-package gui.optionBars;
+package gui;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ import javafx.scene.control.Slider;
 
 public class SnowflakeOptions extends OptionsPane{
 	
-	private static final String fxml = "../fxml/snowflakeBarFXML.fxml";
+	private static final String fxml = "fxml/snowflakeBarFXML.fxml";
 	
 	@FXML private Slider iterationSlider;
 
