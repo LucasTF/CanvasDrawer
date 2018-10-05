@@ -143,10 +143,10 @@ public class CanvasGUI {
 				if(rightObject != null) break;
 			}
 			if(rightObject != null) {
-				rightObject.erasePoints(mainCanvas, background, objectThickness+2);
-				drawnObjects.remove(rightObject);
-				rightObject = null;
-				objectThickness = 3;
+					rightObject.erasePoints(mainCanvas, background, objectThickness+2);
+					drawnObjects.remove(rightObject);
+					rightObject = null;
+					objectThickness = 3;
 			}
 		});
 	}
