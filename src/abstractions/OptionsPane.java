@@ -5,13 +5,18 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 public abstract class OptionsPane {
 	
 	@FXML protected AnchorPane optionsPane;
 	@FXML protected Slider diameterSlider;
+	@FXML protected Text selectedObjectText;
+	@FXML protected Label selectedObjectLabel;
+	@FXML protected Text deleteInstructionText;
 	
 	public OptionsPane(Parent parent, String fxmlPath) throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -29,6 +34,16 @@ public abstract class OptionsPane {
 	
 	public void disableSlider(boolean x) {
 		diameterSlider.setDisable(x);
+	}
+	
+	public void setSelectedObjectLabel(String s) {
+		selectedObjectLabel.setText(s);
+	}
+	
+	public void setSelectedObjectInformationVisible(boolean d) {
+		selectedObjectText.setVisible(d);
+		selectedObjectLabel.setVisible(d);
+		deleteInstructionText.setVisible(d);
 	}
 	
 	public abstract double getIterationsValue();

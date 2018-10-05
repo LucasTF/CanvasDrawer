@@ -56,7 +56,6 @@ public class Drawer {
 			shape.draw(c, drawColor, thickness, iterations);
 			c.setOnMouseClicked(ex -> {
 				IDrawing d = (IDrawing) shape;
-				System.out.println(d.getPointList().size());
 				c.setOnMouseMoved(null);
 				drawingWindow.importToMainCanvas(shape);
 				drawingWindow.addDrawingToList(d);

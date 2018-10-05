@@ -159,4 +159,9 @@ public class Snowflake implements IShape, IDrawing
 		draw(cv, c, thickness, 1);
 		
 	}
+
+	@Override
+	public String getDrawingName() {
+		return "Snowflake";
+	}
 }

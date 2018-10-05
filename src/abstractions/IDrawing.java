@@ -10,4 +10,6 @@ public interface IDrawing {
 	
 	public ArrayList<Point> getPointList();
 	public void erasePoints(Canvas cv, Color c, double thickness);
+	public String getDrawingName();
+	
 }

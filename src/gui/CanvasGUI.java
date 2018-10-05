@@ -7,7 +7,9 @@ import abstractions.IDrawing;
 import abstractions.IShape;
 import abstractions.OptionsPane;
 import app.Drawer;
+import app.Eraser;
 import enums.ShapeType;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -16,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -57,6 +61,7 @@ public class CanvasGUI {
 	private Stage stage;
 	private OptionsPane opPane;
 	private ShapeType selectedShape;
+	private IDrawing selectedDrawing;
 	
 	private Drawer drawer = new Drawer(this);
 	
@@ -127,26 +132,27 @@ public class CanvasGUI {
 	@FXML
 	private void setEraseMode() {
 		disableShapeOptions(false);
-		mainCanvas.setOnMouseClicked(e -> {
-			IDrawing rightObject = null;
-			int objectThickness = 3;
-			int x = (int) e.getX();
-			int y = (int) e.getY();
-			for(IDrawing d : drawnObjects) {
-				for(Point p : d.getPointList()) {
-					if(((int) p.getPoint().getX() <= x+p.getDiameter() && (int) p.getPoint().getX() >= x-p.getDiameter()) && ((int) p.getPoint().getY() >= y-p.getDiameter()) && (int) p.getPoint().getY() <= y+p.getDiameter()) {
-						rightObject = d;
-						objectThickness = p.getDiameter();
-						break;
+		opPane.setSelectedObjectInformationVisible(true);
+		opPane.setSelectedObjectLabel("-");
+		mainCanvas.setOnMouseClicked(e -> setErasingEnvironment(e));
+	}
+	
+	private void setErasingEnvironment(MouseEvent e) {
+		selectedDrawing = null;
+		Eraser eraser = new Eraser();
+		selectedDrawing = eraser.findClickedDrawing(e, drawnObjects);
+		if(selectedDrawing != null) opPane.setSelectedObjectLabel(selectedDrawing.getDrawingName());
+		else opPane.setSelectedObjectLabel("-");
+		stage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.DELETE) {
+					if(selectedDrawing != null) {
+						eraser.eraseDrawing(mainCanvas, background, selectedDrawing.getPointList().get(0).getDiameter()+3, selectedDrawing);
+						drawnObjects.remove(selectedDrawing);
+						opPane.setSelectedObjectLabel("-");
 					}
 				}
-				if(rightObject != null) break;
-			}
-			if(rightObject != null) {
-					rightObject.erasePoints(mainCanvas, background, objectThickness+2);
-					drawnObjects.remove(rightObject);
-					rightObject = null;
-					objectThickness = 3;
 			}
 		});
 	}
@@ -199,6 +205,7 @@ public class CanvasGUI {
 	public void clearCanvas(Canvas c) {
 		c.getGraphicsContext2D().clearRect(0, 0, c.getWidth(), c.getHeight());
 		drawnObjects.clear();
+		opPane.setSelectedObjectInformationVisible(false);
 	}
 	
 	public void softClear(Canvas c) {
@@ -260,7 +267,6 @@ public class CanvasGUI {
 	
 	public void addDrawingToList(IDrawing drawing) {
 		this.drawnObjects.add(drawing);
-		System.out.println("Numero de Desenhos na lista: " + drawnObjects.size());
 	}
 	
 	private void disableShapeOptions(boolean d) {

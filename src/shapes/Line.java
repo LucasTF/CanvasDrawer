@@ -86,4 +86,9 @@ public class Line implements IShape , IDrawing{
 		draw(cv, c, thickness, 0);
 		
 	}
+
+	@Override
+	public String getDrawingName() {
+		return "Reta";
+	}
 }

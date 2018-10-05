@@ -121,4 +121,9 @@ public class Circle implements IShape , IDrawing{
 		draw(cv, c, thickness, 0);
 		
 	}
+
+	@Override
+	public String getDrawingName() {
+		return "Circulo";
+	}
 }

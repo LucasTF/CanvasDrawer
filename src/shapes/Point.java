@@ -65,4 +65,9 @@ public class Point implements IDrawing{
 		
 	}
 
+	@Override
+	public String getDrawingName() {
+		return "Ponto";
+	}
+
 }

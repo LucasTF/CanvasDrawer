@@ -67,5 +67,10 @@ public class PolygonalLine implements IShape, IDrawing{
 		}
 		
 	}
+
+	@Override
+	public String getDrawingName() {
+		return "Linha Poligonal";
+	}
 	
 }
