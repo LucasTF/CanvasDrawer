@@ -1,7 +1,9 @@
 package gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import abstractions.IDrawing;
 import abstractions.IShape;
 import abstractions.OptionsPane;
 import app.Drawer;
@@ -34,6 +36,8 @@ public class CanvasGUI {
 	public final Color background = Color.AZURE;
 	
 	@FXML private Menu utilityMenu;
+	@FXML private MenuItem eraseButton;
+	
 	@FXML private Menu colorMenu;
 	
 	@FXML private Menu shapeMenu;
@@ -55,9 +59,12 @@ public class CanvasGUI {
 	private ShapeType selectedShape;
 	
 	private Drawer drawer = new Drawer(this);
+	
+	private ArrayList<IDrawing> drawnObjects;
 
 	public CanvasGUI(Stage stage) throws IOException {
 		this.stage = stage;
+		this.drawnObjects = new ArrayList<IDrawing>();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
 		loader.setController(this);
 		Parent root = loader.load();
@@ -73,40 +80,36 @@ public class CanvasGUI {
 	}
 	
 	@FXML
-	public void setSnowMode() {
+	private void setSnowMode() {
 		disableShapeOptions(false);
 		snowButton.setDisable(true);
-		drawer.setShape(new Snowflake());
 		selectedShape = ShapeType.SNOWFLAKE;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
-	public void setLineMode() {
+	private void setLineMode() {
 		disableShapeOptions(false);
 		lineButton.setDisable(true);
-		drawer.setShape(new Line());
 		selectedShape = ShapeType.LINE;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
-	public void setCircMode() {
+	private void setCircMode() {
 		disableShapeOptions(false);
 		circButton.setDisable(true);
-		drawer.setShape(new Circle());
 		selectedShape = ShapeType.CIRCLE;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
 	}
 	
 	@FXML
-	public void setPolygonalLineMode() {
+	private void setPolygonalLineMode() {
 		disableShapeOptions(false);
 		polygonalLineButton.setDisable(true);
-		drawer.setShape(new PolygonalLine());
 		selectedShape = ShapeType.POLYGONALLINE;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
@@ -121,6 +124,33 @@ public class CanvasGUI {
 		setOptionsBar(selectedShape);
 	}
 	
+	@FXML
+	private void setEraseMode() {
+		disableShapeOptions(false);
+		mainCanvas.setOnMouseClicked(e -> {
+			IDrawing rightObject = null;
+			int objectThickness = 3;
+			int x = (int) e.getX();
+			int y = (int) e.getY();
+			for(IDrawing d : drawnObjects) {
+				for(Point p : d.getPointList()) {
+					if(((int) p.getPoint().getX() <= x+p.getDiameter() && (int) p.getPoint().getX() >= x-p.getDiameter()) && ((int) p.getPoint().getY() >= y-p.getDiameter()) && (int) p.getPoint().getY() <= y+p.getDiameter()) {
+						rightObject = d;
+						objectThickness = p.getDiameter();
+						break;
+					}
+				}
+				if(rightObject != null) break;
+			}
+			if(rightObject != null) {
+				rightObject.erasePoints(mainCanvas, background, objectThickness+2);
+				drawnObjects.remove(rightObject);
+				rightObject = null;
+				objectThickness = 3;
+			}
+		});
+	}
+	
 	private void setDrawingEnvironment(MouseEvent e) {
 		switch(selectedShape) {
 		case POINT:
@@ -128,17 +158,22 @@ public class CanvasGUI {
 			break;
 		case LINE:
 			drawingCanvas.setDisable(false);
+			drawer.setShape(new Line());
 			drawer.drawLine(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
 		case CIRCLE:
 			drawingCanvas.setDisable(false);
+			drawer.setShape(new Circle());
 			drawer.drawCircle(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
 		case SNOWFLAKE:
-			// Needs Legacy Drawing to Work
+			drawingCanvas.setDisable(false);
+			drawer.setShape(new Snowflake());
+			drawer.drawSnowflake(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
 		case POLYGONALLINE:
 			drawingCanvas.setDisable(false);
+			drawer.setShape(new PolygonalLine());
 			drawer.drawPolygonalLine(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
 		case RECTANGLE:
@@ -158,12 +193,16 @@ public class CanvasGUI {
 	
 	public void importToMainCanvas(IShape drawedShape) {
 		drawedShape.draw(mainCanvas, drawColor, opPane.getThicknessValue(), opPane.getIterationsValue());
-		clearCanvas(drawingCanvas);
+		softClear(drawingCanvas);
 	}
 	
 	public void clearCanvas(Canvas c) {
 		c.getGraphicsContext2D().clearRect(0, 0, c.getWidth(), c.getHeight());
-		drawer.setOpenPoints(0);
+		drawnObjects.clear();
+	}
+	
+	public void softClear(Canvas c) {
+		c.getGraphicsContext2D().clearRect(0, 0, c.getWidth(), c.getHeight());
 	}
 	
 	@FXML
@@ -217,6 +256,11 @@ public class CanvasGUI {
 	
 	public ShapeType getSelectedShape() {
 		return selectedShape;
+	}
+	
+	public void addDrawingToList(IDrawing drawing) {
+		this.drawnObjects.add(drawing);
+		System.out.println("Numero de Desenhos na lista: " + drawnObjects.size());
 	}
 	
 	private void disableShapeOptions(boolean d) {

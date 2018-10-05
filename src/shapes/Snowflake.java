@@ -1,12 +1,13 @@
 package shapes;
 
 import abstractions.IShape;
+import abstractions.IDrawing;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
-public class Snowflake implements IShape
+public class Snowflake implements IShape, IDrawing
 {
 	private Point base;
 	private Point tip1;
@@ -14,6 +15,7 @@ public class Snowflake implements IShape
 	private Point tip3;
 	private Point center;
 	private ArrayList<Line> sides;
+	private ArrayList<Point> pointList;
 	private GraphicsContext gc;
 	private double diameter;
 	private Color color;
@@ -29,6 +31,7 @@ public class Snowflake implements IShape
 	{
 		this.base = p;
 		this.sides = new ArrayList<Line>();
+		this.pointList = new ArrayList<Point>();
 	}
 	
 	@Override
@@ -74,6 +77,7 @@ public class Snowflake implements IShape
 		for(Line side : this.sides)
 		{
 			side.draw(gv, this.color, this.diameter, this.iterations);
+			this.pointList.addAll(side.getPointList());
 		}
 	}
 	
@@ -143,5 +147,16 @@ public class Snowflake implements IShape
 	@Override
 	public Point getLastPoint() {
 		return center;
+	}
+	
+	@Override
+	public ArrayList<Point> getPointList() {
+		return this.pointList;
+	}
+	
+	@Override
+	public void erasePoints(Canvas cv, Color c, double thickness) {
+		draw(cv, c, thickness, 1);
+		
 	}
 }

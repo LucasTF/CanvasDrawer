@@ -12,9 +12,10 @@
    <children>
       <MenuBar prefHeight="25.0" prefWidth="500.0">
         <menus>
-            <Menu fx:id="utilityMenu" mnemonicParsing="false" text="Utilidades">
+            <Menu fx:id="utilityMenu" mnemonicParsing="false" text="Ferramentas">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#clearMainCanvas" text="Limpar tela" />
+                <MenuItem fx:id="eraseButton" mnemonicParsing="false" onAction="#setEraseMode" text="Borracha" />
               </items>
             </Menu>
           <Menu fx:id="shapeMenu" mnemonicParsing="false" text="Formas">

@@ -1,5 +1,6 @@
 package app;
 
+import abstractions.IDrawing;
 import abstractions.IShape;
 import gui.CanvasGUI;
 import javafx.scene.canvas.Canvas;
@@ -7,10 +8,10 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import shapes.Point;
+import shapes.PolygonalLine;
 
 public class Drawer {
 	
-	private int openPoints;
 	private IShape shape;
 	private CanvasGUI drawingWindow;
 	
@@ -26,6 +27,10 @@ public class Drawer {
 		drawBasicShape(e, drawColor, c, thickness, 0);
 	}
 	
+	public void drawSnowflake(MouseEvent e, Color drawColor, Canvas c, double thickness) {
+		drawBasicShape(e, drawColor, c, thickness, 0); //not work
+	}
+	
 	public void drawPolygonalLine(MouseEvent e, Color drawColor, Canvas c, double thickness) {
 		drawPolygonalLine(e, drawColor, c, thickness, 0);
 	}
@@ -39,31 +44,26 @@ public class Drawer {
 	}
 	
 	private void drawBasicShape(MouseEvent e, Color drawColor, Canvas c, double thickness, double iterations){
-		openPoints = 0;
 		Point p = drawingWindow.getPoint(e);
 		p.setColor(drawColor);
-		p.drawPoint(c.getGraphicsContext2D());
-		if(openPoints == 0) {
-			shape.setFirstPoint(p);
-			drawingWindow.disableMenus(true);
-			c.setOnMouseMoved(em ->{
-				drawingWindow.clearCanvas(c);
-				Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
-				if(openPoints == 1) {
-					shape.draw(c, drawingWindow.background, thickness+2, iterations);
-				}
-				shape.setLastPoint(l);
-				shape.draw(c, drawColor, thickness, iterations);
-				c.setOnMouseClicked(ex -> {
-					openPoints = 0;
-					c.setOnMouseMoved(null);
-					drawingWindow.importToMainCanvas(shape);
-					c.setDisable(true);
-					drawingWindow.disableMenus(false);
+		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);
+		shape.setFirstPoint(p);
+		drawingWindow.disableMenus(true);
+		c.setOnMouseMoved(em ->{
+			drawingWindow.softClear(c);
+			Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
+			shape.setLastPoint(l);
+			shape.draw(c, drawColor, thickness, iterations);
+			c.setOnMouseClicked(ex -> {
+				IDrawing d = (IDrawing) shape;
+				System.out.println(d.getPointList().size());
+				c.setOnMouseMoved(null);
+				drawingWindow.importToMainCanvas(shape);
+				drawingWindow.addDrawingToList(d);
+				c.setDisable(true);
+				drawingWindow.disableMenus(false);
 				});
-				if(openPoints == 0) openPoints++;
 			});
-		}
 	}
 	
 	public void drawPoint(MouseEvent e, Color drawColor, Canvas c, double thickness){
@@ -71,44 +71,40 @@ public class Drawer {
 		
 		x = (int)e.getX();
 		y = (int)e.getY();
-		Point p = new Point(x, y, thickness);
-		p.setColor(drawColor);
-		p.drawPoint(c.getGraphicsContext2D());
+		Point p = new Point(x, y);
+		p.drawPoint(c, drawColor, (int) thickness, 0);
+		drawingWindow.addDrawingToList(p);
 	}
 	
 	private void drawPolygonalLine(MouseEvent e, Color drawColor, Canvas c, double thickness, double iterations){
-		openPoints = 0;
+		PolygonalLine pl = (PolygonalLine) shape;
 		Point p = drawingWindow.getPoint(e);
 		p.setColor(drawColor);
-		p.drawPoint(c.getGraphicsContext2D());
-		if(openPoints == 0) {
-			shape.setFirstPoint(p);
-			drawingWindow.disableMenus(true);
-			c.setOnMouseMoved(em ->{
-				drawingWindow.clearCanvas(c);
-				Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
-				if(openPoints == 1) {
-					shape.draw(c, drawingWindow.background, thickness+2, iterations);
+		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);
+		pl.setFirstPoint(p);
+		drawingWindow.disableMenus(true);
+		c.setOnMouseMoved(em ->{
+			drawingWindow.softClear(c);
+			Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
+			pl.setLastPoint(l);
+			pl.draw(c, drawColor, thickness, iterations);
+			c.setOnMouseClicked(ex -> {
+				if(ex.getButton() == MouseButton.PRIMARY) {
+					drawingWindow.importToMainCanvas(pl);
+					drawingWindow.softClear(c);
+					pl.setFirstPoint(pl.getLastPoint());
+					pl.setDrawnLineToPointList();
 				}
-				shape.setLastPoint(l);
-				shape.draw(c, drawColor, thickness, iterations);
-				c.setOnMouseClicked(ex -> {
-					if(ex.getButton() == MouseButton.PRIMARY) {
-						drawingWindow.importToMainCanvas(shape);
-						drawingWindow.clearCanvas(c);
-						shape.setFirstPoint(shape.getLastPoint());
-					}
-					else if(ex.getButton() == MouseButton.SECONDARY){
-						openPoints = 0;
-						c.setOnMouseMoved(null);
-						drawingWindow.importToMainCanvas(shape);
-						c.setDisable(true);
-						drawingWindow.disableMenus(false);
-					}
-				});
-				if(openPoints == 0) openPoints++;
+				else if(ex.getButton() == MouseButton.SECONDARY){
+					c.setOnMouseMoved(null);
+					drawingWindow.importToMainCanvas(pl);
+					c.setDisable(true);
+					drawingWindow.disableMenus(false);
+					pl.setDrawnLineToPointList();
+					drawingWindow.addDrawingToList(pl);
+				}
 			});
-		}
+		});
 	}
 	
 	public IShape getShape() {
@@ -117,14 +113,6 @@ public class Drawer {
 	
 	public void setShape(IShape shape) {
 		this.shape = shape;
-	}
-
-	public int getOpenPoints() {
-		return openPoints;
-	}
-
-	public void setOpenPoints(int openPoints) {
-		this.openPoints = openPoints;
 	}
 	
 	

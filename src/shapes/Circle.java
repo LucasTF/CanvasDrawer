@@ -1,11 +1,14 @@
 package shapes;
 
+import java.util.ArrayList;
+
+import abstractions.IDrawing;
 import abstractions.IShape;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class Circle implements IShape {
+public class Circle implements IShape , IDrawing{
 
 	private Point center;
 	private Point circPoint;
@@ -14,6 +17,8 @@ public class Circle implements IShape {
 	private final double finalAngle = 89.9;
 	private final int[][] quarterValues = { {1, 1 }, {1, -1}, {-1, 1}, {-1, -1} };
 	private final int[][] cornerValues = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+	
+	private ArrayList<Point> pointList = new ArrayList<Point>();
 	
 	public Circle(){
 		
@@ -32,7 +37,7 @@ public class Circle implements IShape {
 
 	@Override
 	public void draw(Canvas cv, Color c, double diameter, double iterations) {
-
+		pointList.clear();
 		clearPointsInCanvas(cv.getGraphicsContext2D(), diameter);
 
 		drawCircle(cv.getGraphicsContext2D(), c, diameter);
@@ -62,7 +67,8 @@ public class Circle implements IShape {
 		Point p;
 		p = new Point(getXForDraw(x * xSide), getYForDraw(y * ySide), diameter);
 		p.setColor(c);
-		p.drawPoint(gc);
+		p.drawPoint(gc.getCanvas(), c, (int) diameter, 0);
+		pointList.add(p);
 	}
 
 	private void clearPointsInCanvas(GraphicsContext gc, double diameter){
@@ -103,5 +109,16 @@ public class Circle implements IShape {
 	@Override
 	public Point getLastPoint() {
 		return circPoint;
+	}
+
+	@Override
+	public ArrayList<Point> getPointList() {
+		return pointList;
+	}
+
+	@Override
+	public void erasePoints(Canvas cv, Color c, double thickness) {
+		draw(cv, c, thickness, 0);
+		
 	}
 }
