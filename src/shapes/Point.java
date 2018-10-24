@@ -13,9 +13,15 @@ public class Point implements IDrawing{
 	private int diameter;
 	private Point2D point2d;
 	
+	private int x;
+	private int y;
+	
 	private ArrayList<Point> pointList = new ArrayList<Point>();
 	
 	public Point(int x, int y, double diameter) {
+		this.x = x;
+		this.y = y;
+		
 		point2d = new Point2D(x, y);
 		color = Color.BLACK;
 		this.diameter = (int) diameter;
@@ -69,5 +75,12 @@ public class Point implements IDrawing{
 	public String getDrawingName() {
 		return "Ponto";
 	}
-
+	
+	public int getX(){
+		return x;
+	}
+	
+	public int getY(){
+		return y;
+	}
 }

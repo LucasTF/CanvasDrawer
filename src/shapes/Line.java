@@ -84,7 +84,6 @@ public class Line implements IShape , IDrawing{
 	@Override
 	public void erasePoints(Canvas cv, Color c, double thickness) {
 		draw(cv, c, thickness, 0);
-		
 	}
 
 	@Override

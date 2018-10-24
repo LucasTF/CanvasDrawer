@@ -36,11 +36,11 @@ public class Drawer {
 	}
 	
 	public void drawClosedPolygon(MouseEvent e, Color drawColor, Canvas c, double thickness) {
-		// To be Implemented
+		drawClosedPolygon(e, drawColor, c, thickness, 0);
 	}
 	
-	public void drawRectangle(MouseEvent e, Color drawColor, Canvas c, double thickness, double iterations) {
-		// To be Implemented
+	public void drawRectangle(MouseEvent e, Color drawColor, Canvas c, double thickness) {
+		drawRectangle(e, drawColor, c, thickness, 0);
 	}
 	
 	private void drawBasicShape(MouseEvent e, Color drawColor, Canvas c, double thickness, double iterations){
@@ -104,6 +104,65 @@ public class Drawer {
 				}
 			});
 		});
+	}
+	
+	private void drawClosedPolygon(MouseEvent e, Color drawColor, Canvas c, double thickness, double iterations){
+		PolygonalLine pl = (PolygonalLine) shape;
+		Point p = drawingWindow.getPoint(e);
+		p.setColor(drawColor);
+		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);
+		pl.setFirstPoint(p);
+		Point starterPoint = p;
+		drawingWindow.disableMenus(true);
+		c.setOnMouseMoved(em ->{
+			drawingWindow.softClear(c);
+			Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
+			pl.setLastPoint(l);
+			pl.draw(c, drawColor, thickness, iterations);
+			c.setOnMouseClicked(ex -> {
+				if(ex.getButton() == MouseButton.PRIMARY) {
+					drawingWindow.importToMainCanvas(pl);
+					drawingWindow.softClear(c);
+					pl.setFirstPoint(pl.getLastPoint());
+					pl.setDrawnLineToPointList();
+				}
+				else if(ex.getButton() == MouseButton.SECONDARY){
+					pl.setLastPoint(starterPoint);
+					pl.draw(c, drawColor, thickness, iterations);
+					drawingWindow.importToMainCanvas(pl);
+					drawingWindow.softClear(c);
+					pl.setDrawnLineToPointList();
+					c.setOnMouseMoved(null);
+					drawingWindow.importToMainCanvas(pl);
+					c.setDisable(true);
+					drawingWindow.disableMenus(false);
+					pl.setDrawnLineToPointList();
+					drawingWindow.addDrawingToList(pl);
+				}
+			});
+		});
+	}
+	
+	private void drawRectangle(MouseEvent e, Color drawColor, Canvas c, double thickness, double iterations){
+		Point p = drawingWindow.getPoint(e);
+		p.setColor(drawColor);
+		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);
+		shape.setFirstPoint(p);
+		drawingWindow.disableMenus(true);
+		c.setOnMouseMoved(em ->{
+			drawingWindow.softClear(c);
+			Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
+			shape.setLastPoint(l);
+			shape.draw(c, drawColor, thickness, (int) iterations);
+			c.setOnMouseClicked(ex -> {
+				IDrawing d = (IDrawing) shape;
+				c.setOnMouseMoved(null);
+				drawingWindow.importToMainCanvas(shape);
+				drawingWindow.addDrawingToList(d);
+				c.setDisable(true);
+				drawingWindow.disableMenus(false);
+				});
+			});
 	}
 	
 	public IShape getShape() {

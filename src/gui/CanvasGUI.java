@@ -32,6 +32,7 @@ import shapes.Snowflake;
 import shapes.Circle;
 import shapes.Line;
 import shapes.PolygonalLine;
+import shapes.Rectangle;
 import shapes.Point;
 
 public class CanvasGUI {
@@ -50,6 +51,8 @@ public class CanvasGUI {
 	@FXML private MenuItem circButton;
 	@FXML private MenuItem pointButton;
 	@FXML private MenuItem polygonalLineButton;
+	@FXML private MenuItem closedPolygonButton;
+	@FXML private MenuItem rectangleButton;
 	@FXML private AnchorPane optionsBar;
 	
 	@FXML private Pane canvasPane;
@@ -130,11 +133,29 @@ public class CanvasGUI {
 	}
 	
 	@FXML
+	private void setClosedPolygonMode() {
+		disableShapeOptions(false);
+		closedPolygonButton.setDisable(true);
+		selectedShape = ShapeType.CLOSEDPOLYGON;
+		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
+		setOptionsBar(selectedShape);
+	}
+	
+	@FXML
 	private void setEraseMode() {
 		disableShapeOptions(false);
 		opPane.setSelectedObjectInformationVisible(true);
 		opPane.setSelectedObjectLabel("-");
 		mainCanvas.setOnMouseClicked(e -> setErasingEnvironment(e));
+	}
+
+	@FXML
+	private void setRectangleMode(){
+		disableShapeOptions(false);
+		rectangleButton.setDisable(true);
+		selectedShape = ShapeType.RECTANGLE;
+		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
+		setOptionsBar(selectedShape);
 	}
 	
 	private void setErasingEnvironment(MouseEvent e) {
@@ -183,10 +204,14 @@ public class CanvasGUI {
 			drawer.drawPolygonalLine(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
 		case RECTANGLE:
-			// To be Implemented
+			drawingCanvas.setDisable(false);
+			drawer.setShape(new Rectangle());
+			drawer.drawRectangle(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
 		case CLOSEDPOLYGON:
-			// To be Implemented
+			drawingCanvas.setDisable(false);
+			drawer.setShape(new PolygonalLine());
+			drawer.drawClosedPolygon(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
 		case TRIANGLE:
 			// To be Implemented

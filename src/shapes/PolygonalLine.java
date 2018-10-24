@@ -65,12 +65,10 @@ public class PolygonalLine implements IShape, IDrawing{
 		for(Point p : pointList) {
 			p.drawPoint(cv, c, (int) thickness, 0);
 		}
-		
 	}
 
 	@Override
 	public String getDrawingName() {
-		return "Linha Poligonal";
+		return "Poligono";
 	}
-	
 }
