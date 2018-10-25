@@ -30,8 +30,9 @@ public class Rectangle implements IShape, IDrawing {
 
 	@Override
 	public void erasePoints(Canvas cv, Color c, double thickness) {
-		for(Line line : lines){
-			line.draw(cv, c, thickness, 0);
+		for(Point p : this.pointList)
+		{
+			p.drawTempPoint(cv, c, (int)thickness, 0);
 		}
 	}
 

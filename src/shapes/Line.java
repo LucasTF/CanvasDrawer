@@ -83,9 +83,12 @@ public class Line implements IShape , IDrawing{
 
 	@Override
 	public void erasePoints(Canvas cv, Color c, double thickness) {
-		draw(cv, c, thickness, 0);
+		for(Point p : this.pointList)
+		{
+			p.drawTempPoint(cv, c, (int)thickness, 0);
+		}
 	}
-
+	
 	@Override
 	public String getDrawingName() {
 		return "Reta";

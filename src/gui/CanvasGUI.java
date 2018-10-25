@@ -8,6 +8,7 @@ import abstractions.IShape;
 import abstractions.OptionsPane;
 import app.Drawer;
 import app.Eraser;
+import app.Translator;
 import enums.ShapeType;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -145,8 +146,22 @@ public class CanvasGUI {
 	private void setEraseMode() {
 		disableShapeOptions(false);
 		opPane.setSelectedObjectInformationVisible(true);
+		opPane.setDeleteInstructionVisible(true);
+		opPane.setTranslateInstructionVisible(false);
+		opPane.disableSlider(true);
 		opPane.setSelectedObjectLabel("-");
 		mainCanvas.setOnMouseClicked(e -> setErasingEnvironment(e));
+	}
+	
+	@FXML
+	private void setTranslateMode() {
+		disableShapeOptions(false);
+		opPane.setSelectedObjectInformationVisible(true);
+		opPane.setTranslateInstructionVisible(true);
+		opPane.setDeleteInstructionVisible(false);
+		opPane.disableSlider(true);
+		opPane.setSelectedObjectLabel("-");
+		mainCanvas.setOnMouseClicked(e -> setTranslatingEnvironment(e));
 	}
 
 	@FXML
@@ -156,6 +171,28 @@ public class CanvasGUI {
 		selectedShape = ShapeType.RECTANGLE;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
+	}
+	
+	private void setTranslatingEnvironment(MouseEvent e) {
+		selectedDrawing = null;
+		Translator translator = new Translator();
+		selectedDrawing = translator.findClickedDrawing(e, drawnObjects);
+		if(selectedDrawing != null) {
+			opPane.setSelectedObjectLabel(selectedDrawing.getDrawingName());
+		}
+		else {
+			opPane.setSelectedObjectLabel("-");
+		}
+		stage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode().isArrowKey()) {
+					if(selectedDrawing != null) {
+						translator.translateDrawing(mainCanvas, background, selectedDrawing, drawnObjects, 5, event.getCode());
+					}
+				}
+			}
+		});
 	}
 	
 	private void setErasingEnvironment(MouseEvent e) {
@@ -169,7 +206,7 @@ public class CanvasGUI {
 			public void handle(KeyEvent event) {
 				if(event.getCode() == KeyCode.DELETE) {
 					if(selectedDrawing != null) {
-						eraser.eraseDrawing(mainCanvas, background, selectedDrawing.getPointList().get(0).getDiameter()+3, selectedDrawing, drawnObjects);
+						eraser.eraseDrawing(mainCanvas, background, selectedDrawing.getPointList().get(0).getDiameter(), selectedDrawing, drawnObjects);
 						opPane.setSelectedObjectLabel("-");
 					}
 				}
@@ -230,6 +267,8 @@ public class CanvasGUI {
 		c.getGraphicsContext2D().clearRect(0, 0, c.getWidth(), c.getHeight());
 		drawnObjects.clear();
 		opPane.setSelectedObjectInformationVisible(false);
+		opPane.setDeleteInstructionVisible(false);
+		opPane.setTranslateInstructionVisible(false);
 	}
 	
 	public void softClear(Canvas c) {
