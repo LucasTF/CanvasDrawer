@@ -83,4 +83,13 @@ public class Point implements IDrawing{
 	public int getY(){
 		return y;
 	}
+	
+	@Override
+	public void redraw(Canvas cv)
+	{
+		for(Point p : this.pointList)
+		{
+			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
+		}
+	}
 }

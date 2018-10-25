@@ -25,8 +25,13 @@ public class Eraser {
 		return null;
 	}
 	
-	public void eraseDrawing(Canvas cv, Color c, int thickness, IDrawing drawing) {
+	public void eraseDrawing(Canvas cv, Color c, int thickness, IDrawing drawing, ArrayList<IDrawing> drawnObjects) {
 		drawing.erasePoints(cv, c, thickness+2);
+		drawnObjects.remove(drawing);
+		for(IDrawing d : drawnObjects)
+		{
+			d.redraw(cv);
+		}
 	}
 	
 }

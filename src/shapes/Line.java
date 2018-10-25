@@ -90,4 +90,13 @@ public class Line implements IShape , IDrawing{
 	public String getDrawingName() {
 		return "Reta";
 	}
+	
+	@Override
+	public void redraw(Canvas cv)
+	{
+		for(Point p : this.pointList)
+		{
+			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
+		}
+	}
 }

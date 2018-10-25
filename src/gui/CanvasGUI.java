@@ -169,8 +169,7 @@ public class CanvasGUI {
 			public void handle(KeyEvent event) {
 				if(event.getCode() == KeyCode.DELETE) {
 					if(selectedDrawing != null) {
-						eraser.eraseDrawing(mainCanvas, background, selectedDrawing.getPointList().get(0).getDiameter()+3, selectedDrawing);
-						drawnObjects.remove(selectedDrawing);
+						eraser.eraseDrawing(mainCanvas, background, selectedDrawing.getPointList().get(0).getDiameter()+3, selectedDrawing, drawnObjects);
 						opPane.setSelectedObjectLabel("-");
 					}
 				}

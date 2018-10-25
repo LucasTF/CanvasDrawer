@@ -13,6 +13,8 @@ public class Rectangle implements IShape, IDrawing {
 	private Point firstPoint;
 	private Point lastPoint;
 	
+	private ArrayList<Point> pointList = new ArrayList<Point>();
+	
 	public Rectangle(){
 		lines = new Line[4];
 		lines[0] = new Line();
@@ -23,14 +25,6 @@ public class Rectangle implements IShape, IDrawing {
 	
 	@Override
 	public ArrayList<Point> getPointList() {
-		ArrayList<Point> pointList = new ArrayList<Point>();
-		
-		for(Line line : lines){
-			for(Point p : line.getPointList()){
-				pointList.add(p);
-			}
-		}
-		
 		return pointList;
 	}
 
@@ -68,7 +62,7 @@ public class Rectangle implements IShape, IDrawing {
 
 	@Override
 	public void draw(Canvas cv, Color c, double diameter, double iterations) {
-		
+		pointList.clear();
 		Point secondPoint = new Point(lastPoint.getX(), firstPoint.getY());
 		Point thirdPoint = new Point(firstPoint.getX(), lastPoint.getY());
 		
@@ -84,6 +78,23 @@ public class Rectangle implements IShape, IDrawing {
 		lines[3].setFirstPoint(thirdPoint);
 		lines[3].setLastPoint(lastPoint);
 		lines[3].draw(cv, c, diameter, iterations);
+		for(Line l : lines)
+		{
+			for(Point p : l.getPointList())
+			{
+				pointList.add(p);
+			}
+		}
+		
+	}
+	
+	@Override
+	public void redraw(Canvas cv)
+	{
+		for(Point p : this.pointList)
+		{
+			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
+		}
 	}
 
 }

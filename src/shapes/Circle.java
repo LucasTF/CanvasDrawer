@@ -126,4 +126,13 @@ public class Circle implements IShape , IDrawing{
 	public String getDrawingName() {
 		return "Circulo";
 	}
+	
+	@Override
+	public void redraw(Canvas cv)
+	{
+		for(Point p : this.pointList)
+		{
+			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
+		}
+	}
 }

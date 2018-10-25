@@ -164,4 +164,13 @@ public class Snowflake implements IShape, IDrawing
 	public String getDrawingName() {
 		return "Snowflake";
 	}
+	
+	@Override
+	public void redraw(Canvas cv)
+	{
+		for(Point p : this.pointList)
+		{
+			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
+		}
+	}
 }
