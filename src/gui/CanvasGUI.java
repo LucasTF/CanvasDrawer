@@ -183,14 +183,14 @@ public class CanvasGUI {
 		else {
 			opPane.setSelectedObjectLabel("-");
 		}
-		stage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+		mainCanvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(KeyEvent event) {
-				if(event.getCode().isArrowKey()) {
+			public void handle(MouseEvent event) {
 					if(selectedDrawing != null) {
-						translator.translateDrawing(mainCanvas, background, selectedDrawing, drawnObjects, 5, event.getCode());
+						translator.translateDrawing(mainCanvas, background, selectedDrawing, drawnObjects, event);
 					}
-				}
+					opPane.setSelectedObjectLabel("-");
+					mainCanvas.setOnMouseClicked(nextE -> setTranslatingEnvironment(nextE));
 			}
 		});
 	}

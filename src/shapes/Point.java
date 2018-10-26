@@ -28,6 +28,9 @@ public class Point implements IDrawing{
 	}
 	
 	public Point(int x, int y) {
+		this.x = x;
+		this.y = y;
+		
 		point2d = new Point2D(x, y);
 		color = Color.BLACK;
 	}
@@ -63,7 +66,6 @@ public class Point implements IDrawing{
 	public void drawTempPoint(Canvas cv, Color c, int diameter, int iterations) {
 		cv.getGraphicsContext2D().setFill(c);
 		cv.getGraphicsContext2D().fillOval((int)(point2d.getX()-(diameter/2)), (int)(point2d.getY()-(diameter/2)), diameter, diameter);
-		pointList.add(this);
 	}
 
 	@Override
@@ -97,7 +99,7 @@ public class Point implements IDrawing{
 	{
 		for(Point p : this.pointList)
 		{
-			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
+			p.drawTempPoint(cv, p.getColor(), p.getDiameter(), 0);
 		}
 	}
 }

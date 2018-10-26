@@ -20,7 +20,7 @@
             <Font size="10.0" />
          </font>
       </Text>
-      <Text fx:id="translateInstructionText" layoutX="310.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pressione as Arrow Keys para traduzir" visible="false">
+      <Text fx:id="translateInstructionText" layoutX="310.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Utilize o mouse para traduzir" visible="false">
          <font>
             <Font size="10.0" />
          </font>
