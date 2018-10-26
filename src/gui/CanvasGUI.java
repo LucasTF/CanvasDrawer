@@ -150,6 +150,14 @@ public class CanvasGUI {
 	}
 
 	@FXML
+	private void setClipMode() {
+		disableShapeOptions(false);
+		selectedShape = ShapeType.RECTANGLE;
+		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
+		setOptionsBar(ShapeType.RECTANGLE);
+	}
+
+	@FXML
 	private void setRectangleMode(){
 		disableShapeOptions(false);
 		rectangleButton.setDisable(true);
@@ -157,7 +165,11 @@ public class CanvasGUI {
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
 	}
-	
+
+	private void setClippingEnvironment(MouseEvent e){
+		System.out.println("teste");
+	}
+
 	private void setErasingEnvironment(MouseEvent e) {
 		selectedDrawing = null;
 		Eraser eraser = new Eraser();
