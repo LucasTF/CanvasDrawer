@@ -28,6 +28,9 @@ public class Point implements IDrawing{
 	}
 	
 	public Point(int x, int y) {
+		this.x = x;
+		this.y = y;
+		
 		point2d = new Point2D(x, y);
 		color = Color.BLACK;
 	}
@@ -59,6 +62,11 @@ public class Point implements IDrawing{
 		cv.getGraphicsContext2D().fillOval((int)(point2d.getX()-(getDiameter()/2)), (int)(point2d.getY()-(getDiameter()/2)), getDiameter(), getDiameter());
 		pointList.add(this);
 	}
+	
+	public void drawTempPoint(Canvas cv, Color c, int diameter, int iterations) {
+		cv.getGraphicsContext2D().setFill(c);
+		cv.getGraphicsContext2D().fillOval((int)(point2d.getX()-(diameter/2)), (int)(point2d.getY()-(diameter/2)), diameter, diameter);
+	}
 
 	@Override
 	public ArrayList<Point> getPointList() {
@@ -67,8 +75,10 @@ public class Point implements IDrawing{
 
 	@Override
 	public void erasePoints(Canvas cv, Color c, double thickness) {
-		drawPoint(cv, c, (int) thickness, 0);
-		
+		for(Point p : this.pointList)
+		{
+			p.drawTempPoint(cv, c, (int)thickness, 0);
+		}
 	}
 
 	@Override
@@ -89,7 +99,15 @@ public class Point implements IDrawing{
 	{
 		for(Point p : this.pointList)
 		{
-			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
+			p.drawTempPoint(cv, p.getColor(), p.getDiameter(), 0);
 		}
+		recalculatePointsOfInterest();
+	}
+	
+	public void recalculatePointsOfInterest()
+	{
+		this.x = this.pointList.get(0).x;
+		this.y = this.pointList.get(0).y;
+		this.point2d = new Point2D(x, y);
 	}
 }

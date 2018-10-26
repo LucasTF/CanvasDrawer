@@ -156,8 +156,10 @@ public class Snowflake implements IShape, IDrawing
 	
 	@Override
 	public void erasePoints(Canvas cv, Color c, double thickness) {
-		draw(cv, c, thickness, 1);
-		
+		for(Point p : this.pointList)
+		{
+			p.drawTempPoint(cv, c, (int)thickness, 0);
+		}
 	}
 
 	@Override
@@ -172,5 +174,10 @@ public class Snowflake implements IShape, IDrawing
 		{
 			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
 		}
+	}
+	
+	public void recalculatePointsOfInterest()
+	{
+		//some day
 	}
 }

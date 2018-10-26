@@ -12,5 +12,5 @@ public interface IDrawing {
 	public void erasePoints(Canvas cv, Color c, double thickness);
 	public String getDrawingName();
 	public void redraw(Canvas cv);
-	
+	public void recalculatePointsOfInterest();
 }

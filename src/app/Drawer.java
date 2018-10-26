@@ -91,7 +91,7 @@ public class Drawer {
 				if(ex.getButton() == MouseButton.PRIMARY) {
 					drawingWindow.importToMainCanvas(pl);
 					drawingWindow.softClear(c);
-					pl.setFirstPoint(pl.getLastPoint());
+					pl.setupNextLine(pl.getLastPoint());
 					pl.setDrawnLineToPointList();
 				}
 				else if(ex.getButton() == MouseButton.SECONDARY){
@@ -112,7 +112,6 @@ public class Drawer {
 		p.setColor(drawColor);
 		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);
 		pl.setFirstPoint(p);
-		Point starterPoint = p;
 		drawingWindow.disableMenus(true);
 		c.setOnMouseMoved(em ->{
 			drawingWindow.softClear(c);
@@ -123,15 +122,13 @@ public class Drawer {
 				if(ex.getButton() == MouseButton.PRIMARY) {
 					drawingWindow.importToMainCanvas(pl);
 					drawingWindow.softClear(c);
-					pl.setFirstPoint(pl.getLastPoint());
+					pl.setupNextLine(pl.getLastPoint());
 					pl.setDrawnLineToPointList();
 				}
 				else if(ex.getButton() == MouseButton.SECONDARY){
-					pl.setLastPoint(starterPoint);
+					pl.setLastPoint(pl.getFirstPoint());
 					pl.draw(c, drawColor, thickness, iterations);
-					drawingWindow.importToMainCanvas(pl);
 					drawingWindow.softClear(c);
-					pl.setDrawnLineToPointList();
 					c.setOnMouseMoved(null);
 					drawingWindow.importToMainCanvas(pl);
 					c.setDisable(true);
