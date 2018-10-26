@@ -101,5 +101,12 @@ public class Line implements IShape , IDrawing{
 		{
 			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
 		}
+		recalculatePointsOfInterest();
+	}
+	
+	public void recalculatePointsOfInterest()
+	{
+		this.firstPoint = this.pointList.get(0);
+		this.lastPoint = this.pointList.get(this.pointList.size() - 1);
 	}
 }

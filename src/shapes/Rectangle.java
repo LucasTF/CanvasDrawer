@@ -96,6 +96,23 @@ public class Rectangle implements IShape, IDrawing {
 		{
 			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
 		}
+		recalculatePointsOfInterest();
 	}
 
+	public void recalculatePointsOfInterest()
+	{
+		this.firstPoint = this.pointList.get(0);
+		this.lastPoint = this.pointList.get(this.pointList.size() - 1);
+		
+		int pointIndx = 0;
+		for(Line l : this.lines)
+		{
+			for(Point lp : l.getPointList())
+			{
+				l.getPointList().set(l.getPointList().indexOf(lp), this.pointList.get(pointIndx));
+				pointIndx++;
+			}
+			l.recalculatePointsOfInterest();
+		}
+	}
 }

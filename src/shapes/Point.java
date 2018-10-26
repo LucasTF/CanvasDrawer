@@ -101,5 +101,13 @@ public class Point implements IDrawing{
 		{
 			p.drawTempPoint(cv, p.getColor(), p.getDiameter(), 0);
 		}
+		recalculatePointsOfInterest();
+	}
+	
+	public void recalculatePointsOfInterest()
+	{
+		this.x = this.pointList.get(0).x;
+		this.y = this.pointList.get(0).y;
+		this.point2d = new Point2D(x, y);
 	}
 }

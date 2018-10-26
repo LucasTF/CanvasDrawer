@@ -12,6 +12,7 @@ public class Circle implements IShape , IDrawing{
 
 	private Point center;
 	private Point circPoint;
+	private int radius;
 	private final double startingAngle = 0.1;
 	private final double angleStep = 0.1;
 	private final double finalAngle = 89.9;
@@ -45,6 +46,7 @@ public class Circle implements IShape , IDrawing{
 	
 	private void drawCircle(GraphicsContext gc, Color c, double diameter){
 		int radius = (int) Math.sqrt(getXForRadius() + getYForRadius());
+		this.radius = radius;
 		drawCornerPoints(gc, c, diameter, radius);
 		for(double angle = startingAngle; angle <= finalAngle; angle+= angleStep){
 			double cos = Math.cos(Math.toRadians(angle));
@@ -136,5 +138,22 @@ public class Circle implements IShape , IDrawing{
 		{
 			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
 		}
+		recalculatePointsOfInterest();
+	}
+	
+	public void recalculatePointsOfInterest()
+	{
+		int avgX = 0;
+		int avgY = 0;
+		for(Point p : this.pointList)
+		{
+			avgX += p.getX();
+			avgY += p.getY();
+		}
+		avgX /= this.pointList.size();
+		avgY /= this.pointList.size();
+		this.center = new Point(avgX, avgY);
+		this.circPoint = this.pointList.get(0);
+		this.radius = (int) Math.sqrt(getXForRadius() + getYForRadius());		
 	}
 }

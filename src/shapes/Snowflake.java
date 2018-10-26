@@ -175,4 +175,9 @@ public class Snowflake implements IShape, IDrawing
 			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
 		}
 	}
+	
+	public void recalculatePointsOfInterest()
+	{
+		//some day
+	}
 }
