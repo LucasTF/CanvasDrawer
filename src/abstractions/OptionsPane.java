@@ -18,6 +18,7 @@ public abstract class OptionsPane {
 	@FXML protected Label selectedObjectLabel;
 	@FXML protected Text deleteInstructionText;
 	@FXML protected Text translateInstructionText;
+	@FXML protected Text rotateInstructionText;
 	
 	public OptionsPane(Parent parent, String fxmlPath) throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -52,6 +53,10 @@ public abstract class OptionsPane {
 	
 	public void setTranslateInstructionVisible(boolean d) {
 		translateInstructionText.setVisible(d);
+	}
+	
+	public void setRotateInstructionVisible(boolean d) {
+		rotateInstructionText.setVisible(d);
 	}
 	
 	public abstract double getIterationsValue();

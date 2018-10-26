@@ -22,4 +22,18 @@ public abstract class Selector {
 		}
 		return null;
 	}
+	
+	public Point getDrawingCenter(IDrawing target)
+	{
+		int avgX = 0;
+		int avgY = 0;
+		for(Point p : target.getPointList())
+		{
+			avgX += p.getX();
+			avgY += p.getY();
+		}
+		avgX /= target.getPointList().size();
+		avgY /= target.getPointList().size();
+		return new Point(avgX, avgY);
+	}
 }
