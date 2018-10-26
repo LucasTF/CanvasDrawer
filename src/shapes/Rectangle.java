@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import abstractions.IDrawing;
 import abstractions.IShape;
+import enums.ShapeType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
@@ -38,7 +39,7 @@ public class Rectangle implements IShape, IDrawing {
 
 	@Override
 	public String getDrawingName() {
-		return "Retangulo";
+		return ShapeType.RECTANGLE.getShapeName();
 	}
 
 	@Override
@@ -114,5 +115,10 @@ public class Rectangle implements IShape, IDrawing {
 			}
 			l.recalculatePointsOfInterest();
 		}
+	}
+	
+	@Override
+	public Color getColor() {
+		return this.pointList.get(0).getColor();
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import abstractions.IDrawing;
 import abstractions.IShape;
+import enums.ShapeType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -46,7 +47,7 @@ public class Circle implements IShape , IDrawing{
 	
 	private void drawCircle(GraphicsContext gc, Color c, double diameter){
 		int radius = (int) Math.sqrt(getXForRadius() + getYForRadius());
-		this.radius = radius;
+		this.setRadius(radius);
 		drawCornerPoints(gc, c, diameter, radius);
 		for(double angle = startingAngle; angle <= finalAngle; angle+= angleStep){
 			double cos = Math.cos(Math.toRadians(angle));
@@ -128,7 +129,7 @@ public class Circle implements IShape , IDrawing{
 
 	@Override
 	public String getDrawingName() {
-		return "Circulo";
+		return ShapeType.CIRCLE.getShapeName();
 	}
 	
 	@Override
@@ -154,6 +155,19 @@ public class Circle implements IShape , IDrawing{
 		avgY /= this.pointList.size();
 		this.center = new Point(avgX, avgY);
 		this.circPoint = this.pointList.get(0);
-		this.radius = (int) Math.sqrt(getXForRadius() + getYForRadius());		
+		this.setRadius((int) Math.sqrt(getXForRadius() + getYForRadius()));		
+	}
+
+	public int getRadius() {
+		return radius;
+	}
+
+	public void setRadius(int radius) {
+		this.radius = radius;
+	}
+
+	@Override
+	public Color getColor() {
+		return this.pointList.get(0).getColor();
 	}
 }

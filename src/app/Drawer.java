@@ -8,7 +8,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import shapes.Point;
-import shapes.PolygonalLine;
+import shapes.Polygon;
 
 public class Drawer {
 	
@@ -76,7 +76,7 @@ public class Drawer {
 	}
 	
 	private void drawPolygonalLine(MouseEvent e, Color drawColor, Canvas c, double thickness, double iterations){
-		PolygonalLine pl = (PolygonalLine) shape;
+		Polygon pl = (Polygon) shape;
 		Point p = drawingWindow.getPoint(e);
 		p.setColor(drawColor);
 		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);
@@ -107,7 +107,7 @@ public class Drawer {
 	}
 	
 	private void drawClosedPolygon(MouseEvent e, Color drawColor, Canvas c, double thickness, double iterations){
-		PolygonalLine pl = (PolygonalLine) shape;
+		Polygon pl = (Polygon) shape;
 		Point p = drawingWindow.getPoint(e);
 		p.setColor(drawColor);
 		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);

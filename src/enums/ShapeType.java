@@ -1,12 +1,21 @@
 package enums;
 
 public enum ShapeType {
-	POINT,
-	LINE,
-	CIRCLE,
-	SNOWFLAKE,
-	POLYGONALLINE,
-	CLOSEDPOLYGON,
-	RECTANGLE,
-	TRIANGLE;
+	POINT("Ponto"),
+	LINE("Reta"),
+	CIRCLE("Circunferência"),
+	SNOWFLAKE("Snowflake"),
+	POLYGONALLINE("Linha Poligonal"),
+	CLOSEDPOLYGON("Polígono"),
+	RECTANGLE("Retângulo");
+	
+	private String shapeName;
+	
+	ShapeType(String shapeName) {
+		this.shapeName = shapeName;
+	}
+	
+	public String getShapeName() {
+		return this.shapeName;
+	}
 }

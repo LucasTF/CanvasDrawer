@@ -13,4 +13,5 @@ public interface IDrawing {
 	public String getDrawingName();
 	public void redraw(Canvas cv);
 	public void recalculatePointsOfInterest();
+	public Color getColor();
 }

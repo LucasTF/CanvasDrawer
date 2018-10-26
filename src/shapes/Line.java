@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import abstractions.IDrawing;
 import abstractions.IShape;
+import enums.ShapeType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
@@ -91,7 +92,7 @@ public class Line implements IShape , IDrawing{
 	
 	@Override
 	public String getDrawingName() {
-		return "Reta";
+		return ShapeType.LINE.getShapeName();
 	}
 	
 	@Override
@@ -108,5 +109,10 @@ public class Line implements IShape , IDrawing{
 	{
 		this.firstPoint = this.pointList.get(0);
 		this.lastPoint = this.pointList.get(this.pointList.size() - 1);
+	}
+	
+	@Override
+	public Color getColor() {
+		return this.pointList.get(0).getColor();
 	}
 }

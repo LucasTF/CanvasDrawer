@@ -3,6 +3,7 @@ package shapes;
 import java.util.ArrayList;
 
 import abstractions.IDrawing;
+import enums.ShapeType;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
@@ -83,7 +84,7 @@ public class Point implements IDrawing{
 
 	@Override
 	public String getDrawingName() {
-		return "Ponto";
+		return ShapeType.POINT.getShapeName();
 	}
 	
 	public int getX(){

@@ -1,6 +1,7 @@
 package shapes;
 
 import abstractions.IShape;
+import enums.ShapeType;
 import abstractions.IDrawing;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -164,7 +165,7 @@ public class Snowflake implements IShape, IDrawing
 
 	@Override
 	public String getDrawingName() {
-		return "Snowflake";
+		return ShapeType.SNOWFLAKE.getShapeName();
 	}
 	
 	@Override
@@ -179,5 +180,10 @@ public class Snowflake implements IShape, IDrawing
 	public void recalculatePointsOfInterest()
 	{
 		//some day
+	}
+	
+	@Override
+	public Color getColor() {
+		return this.color;
 	}
 }

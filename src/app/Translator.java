@@ -3,6 +3,7 @@ package app;
 import java.util.ArrayList;
 
 import abstractions.IDrawing;
+import abstractions.Selector;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import shapes.Point;

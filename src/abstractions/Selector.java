@@ -1,8 +1,7 @@
-package app;
+package abstractions;
 
 import java.util.ArrayList;
 
-import abstractions.IDrawing;
 import javafx.scene.input.MouseEvent;
 import shapes.Point;
 

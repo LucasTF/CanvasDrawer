@@ -12,12 +12,18 @@
    <children>
       <MenuBar prefHeight="25.0" prefWidth="500.0">
         <menus>
+        	<Menu fx:id="ArchiveMenu" mnemonicParsing="false" text="Arquivo">
+              <items>
+                <MenuItem fx:id="saveButton" mnemonicParsing="false" onAction="#saveDrawing" text="Salvar desenho" />
+                <MenuItem fx:id="loadButton" mnemonicParsing="false" onAction="#loadDrawing" text="Carregar desenho" />
+              </items>
+            </Menu>
             <Menu fx:id="utilityMenu" mnemonicParsing="false" text="Ferramentas">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#clearMainCanvas" text="Limpar tela" />
                 <MenuItem fx:id="eraseButton" mnemonicParsing="false" onAction="#setEraseMode" text="Borracha" />
-                <MenuItem fx:id="translateButton" mnemonicParsing="false" onAction="#setTranslateMode" text="Tradutor" />
-                <MenuItem fx:id="rotateButton" mnemonicParsing="false" onAction="#setRotateMode" text="Rodador" />
+                <MenuItem fx:id="translateButton" mnemonicParsing="false" onAction="#setTranslateMode" text="Translatar" />
+                <MenuItem fx:id="rotateButton" mnemonicParsing="false" onAction="#setRotateMode" text="Rotacionar" />
               </items>
             </Menu>
           <Menu fx:id="shapeMenu" mnemonicParsing="false" text="Formas">

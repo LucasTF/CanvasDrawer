@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 import abstractions.IDrawing;
 import abstractions.IShape;
+import enums.ShapeType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
-public class PolygonalLine implements IShape, IDrawing{
+public class Polygon implements IShape, IDrawing{
 	
 	private Point firstPoint;
 	private Point lastPoint;
@@ -16,7 +17,7 @@ public class PolygonalLine implements IShape, IDrawing{
 	private ArrayList<Point> pointList = new ArrayList<Point>();
 	private ArrayList<Point> bufferList = new ArrayList<Point>();
 	
-	public PolygonalLine(){
+	public Polygon(){
 		lines = new ArrayList<Line>();
 	}
 
@@ -82,7 +83,7 @@ public class PolygonalLine implements IShape, IDrawing{
 
 	@Override
 	public String getDrawingName() {
-		return "Poligono";
+		return ShapeType.CLOSEDPOLYGON.getShapeName();
 	}
 	
 	public void redraw(Canvas cv)
@@ -109,5 +110,10 @@ public class PolygonalLine implements IShape, IDrawing{
 			}
 			l.recalculatePointsOfInterest();
 		}
+	}
+	
+	@Override
+	public Color getColor() {
+		return this.pointList.get(0).getColor();
 	}
 }

@@ -9,6 +9,7 @@ import abstractions.OptionsPane;
 import app.Drawer;
 import app.Eraser;
 import app.Translator;
+import app.xml.XMLSaveManager;
 import app.Rotator;
 import enums.ShapeType;
 import javafx.event.EventHandler;
@@ -33,7 +34,7 @@ import javafx.stage.Stage;
 import shapes.Snowflake;
 import shapes.Circle;
 import shapes.Line;
-import shapes.PolygonalLine;
+import shapes.Polygon;
 import shapes.Rectangle;
 import shapes.Point;
 
@@ -41,6 +42,10 @@ public class CanvasGUI {
 	
 	private static final String fxml = "fxml/canvasGuiFXML.fxml";
 	public final Color background = Color.AZURE;
+	
+	@FXML private Menu archiveMenu;
+	@FXML private MenuItem saveButton;
+	@FXML private MenuItem loadButton;
 	
 	@FXML private Menu utilityMenu;
 	@FXML private MenuItem eraseButton;
@@ -189,6 +194,18 @@ public class CanvasGUI {
 		setOptionsBar(selectedShape);
 	}
 	
+	@FXML
+	public void saveDrawing() {
+		System.out.println(drawnObjects.size());
+		XMLSaveManager xmlS = new XMLSaveManager(mainCanvas.getHeight(), mainCanvas.getWidth());
+		xmlS.exportXML(drawnObjects);
+	}
+	
+	@FXML
+	public void loadDrawing() {
+		
+	}
+	
 	private void setRotatingEnvironment(MouseEvent e) {
 		selectedDrawing = null;
 		Rotator rotator = new Rotator();
@@ -274,7 +291,7 @@ public class CanvasGUI {
 			break;
 		case POLYGONALLINE:
 			drawingCanvas.setDisable(false);
-			drawer.setShape(new PolygonalLine());
+			drawer.setShape(new Polygon());
 			drawer.drawPolygonalLine(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
 		case RECTANGLE:
@@ -284,11 +301,8 @@ public class CanvasGUI {
 			break;
 		case CLOSEDPOLYGON:
 			drawingCanvas.setDisable(false);
-			drawer.setShape(new PolygonalLine());
+			drawer.setShape(new Polygon());
 			drawer.drawClosedPolygon(e, drawColor, drawingCanvas, opPane.getThicknessValue());
-			break;
-		case TRIANGLE:
-			// To be Implemented
 			break;
 		default:
 			break;
