@@ -9,6 +9,7 @@ import abstractions.OptionsPane;
 import app.Drawer;
 import app.Eraser;
 import app.Translator;
+import app.xml.XMLLoadManager;
 import app.xml.XMLSaveManager;
 import app.Rotator;
 import enums.ShapeType;
@@ -203,7 +204,21 @@ public class CanvasGUI {
 	
 	@FXML
 	public void loadDrawing() {
-		
+		XMLLoadManager xmlL = new XMLLoadManager(mainCanvas.getHeight(), mainCanvas.getWidth());
+		clearCanvas(mainCanvas);
+		drawnObjects = xmlL.importXML();
+		if(drawnObjects != null) {
+			for(IDrawing d : drawnObjects) {
+				if(d.getDrawingName() == ShapeType.CLOSEDPOLYGON.getShapeName()){
+					Polygon p = (Polygon) d;
+					p.forceDrawPolygon(mainCanvas, p.getColorC(), opPane.getThicknessValue());
+				}
+				else{
+					IShape shape = (IShape) d;
+					shape.draw(mainCanvas, shape.getFirstPoint().getColor(), opPane.getThicknessValue(), 0);
+				}
+			}
+		}
 	}
 	
 	private void setRotatingEnvironment(MouseEvent e) {

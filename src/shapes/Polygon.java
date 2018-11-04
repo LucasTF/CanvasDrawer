@@ -13,6 +13,7 @@ public class Polygon implements IShape, IDrawing{
 	private Point firstPoint;
 	private Point lastPoint;
 	private ArrayList<Line> lines;
+	private Color colorC;
 	
 	private ArrayList<Point> pointList = new ArrayList<Point>();
 	private ArrayList<Point> bufferList = new ArrayList<Point>();
@@ -32,6 +33,7 @@ public class Polygon implements IShape, IDrawing{
 	{
 		lines.add(new Line());
 		lines.get(lines.size() - 1).setFirstPoint(p);
+		lines.get(lines.size() - 1).setLastPoint(p);
 	}
 	
 	@Override
@@ -47,6 +49,21 @@ public class Polygon implements IShape, IDrawing{
 		for(Point pl : lines.get(lines.size() - 1).getPointList()) {
 			bufferList.add(pl);
 		}
+	}
+	
+	public void setLineForPolygon(Line l){
+		lines.add(l);
+	}
+	
+	public void forceDrawPolygon(Canvas cv, Color c, double diameter){
+		for(Line l: lines){
+			l.draw(cv, c, diameter, 0);
+			for(Point p : l.getPointList()) {
+				this.pointList.add(p);
+			}
+		}
+		this.firstPoint = lines.get(0).getFirstPoint();
+		this.lastPoint = lines.get(lines.size() - 1).getLastPoint();
 	}
 	
 	public void setDrawnLineToPointList() {
@@ -115,5 +132,13 @@ public class Polygon implements IShape, IDrawing{
 	@Override
 	public Color getColor() {
 		return this.pointList.get(0).getColor();
+	}
+
+	public Color getColorC() {
+		return colorC;
+	}
+
+	public void setColorC(Color colorC) {
+		this.colorC = colorC;
 	}
 }

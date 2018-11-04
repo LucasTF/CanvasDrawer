@@ -48,10 +48,10 @@ public class Line implements IShape , IDrawing{
 		deltaX = lastPoint.getPoint().getX() - firstPoint.getPoint().getX();
 		deltaY = lastPoint.getPoint().getY() - firstPoint.getPoint().getY();
 		if(Math.abs(deltaX) > Math.abs(deltaY)) {
-			steps = (int) Math.abs(Math.round(deltaX));
+			steps = (int) Math.abs(Math.round(deltaX)) + 1;
 		}
 		else {
-			steps = (int) Math.abs(Math.round(deltaY));
+			steps = (int) Math.abs(Math.round(deltaY)) + 1;
 		}
 		double xIncrement, yIncrement;
 		xIncrement = deltaX / (double) steps;

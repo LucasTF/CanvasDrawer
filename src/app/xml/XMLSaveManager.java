@@ -85,7 +85,7 @@ public class XMLSaveManager {
 		Element center = createPointElement(normalizeX(circle.getFirstPoint().getX()), normalizeY(circle.getFirstPoint().getY()));
 		l.addContent(center);
 		Element raio = new Element("Raio");
-		raio.addContent(Integer.toString(circle.getRadius()));
+		raio.addContent(Double.toString(circle.getRadius() / xWidth));
 		l.addContent(raio);
 		Element rgb = createRGBElement(circle.getColor());
 		l.addContent(rgb);
@@ -130,13 +130,13 @@ public class XMLSaveManager {
 	private Element createRGBElement(Color color) {
 		Element l = new Element("Cor");
 		Element r = new Element("R");
-		r.addContent(new Text(Double.toString(color.getRed())));
+		r.addContent(new Text(Double.toString(color.getRed() * 255)));
 		l.addContent(r);
 		Element g = new Element("G");
-		g.addContent(new Text(Double.toString(color.getGreen())));
+		g.addContent(new Text(Double.toString(color.getGreen() * 255)));
 		l.addContent(g);
 		Element b = new Element("B");
-		b.addContent(new Text(Double.toString(color.getBlue())));
+		b.addContent(new Text(Double.toString(color.getBlue() * 255)));
 		l.addContent(b);
 		return l;
 	}

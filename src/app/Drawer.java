@@ -48,20 +48,21 @@ public class Drawer {
 		p.setColor(drawColor);
 		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);
 		shape.setFirstPoint(p);
+		shape.setLastPoint(p);
 		drawingWindow.disableMenus(true);
 		c.setOnMouseMoved(em ->{
 			drawingWindow.softClear(c);
 			Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
 			shape.setLastPoint(l);
 			shape.draw(c, drawColor, thickness, iterations);
-			c.setOnMouseClicked(ex -> {
-				IDrawing d = (IDrawing) shape;
-				c.setOnMouseMoved(null);
-				drawingWindow.importToMainCanvas(shape);
-				drawingWindow.addDrawingToList(d);
-				c.setDisable(true);
-				drawingWindow.disableMenus(false);
-				});
+			});
+		c.setOnMouseClicked(ex -> {
+			IDrawing d = (IDrawing) shape;
+			c.setOnMouseMoved(null);
+			drawingWindow.importToMainCanvas(shape);
+			drawingWindow.addDrawingToList(d);
+			c.setDisable(true);
+			drawingWindow.disableMenus(false);
 			});
 	}
 	
@@ -81,28 +82,29 @@ public class Drawer {
 		p.setColor(drawColor);
 		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);
 		pl.setFirstPoint(p);
+		pl.setLastPoint(p);
 		drawingWindow.disableMenus(true);
 		c.setOnMouseMoved(em ->{
 			drawingWindow.softClear(c);
 			Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
 			pl.setLastPoint(l);
 			pl.draw(c, drawColor, thickness, iterations);
-			c.setOnMouseClicked(ex -> {
-				if(ex.getButton() == MouseButton.PRIMARY) {
-					drawingWindow.importToMainCanvas(pl);
-					drawingWindow.softClear(c);
-					pl.setupNextLine(pl.getLastPoint());
-					pl.setDrawnLineToPointList();
-				}
-				else if(ex.getButton() == MouseButton.SECONDARY){
-					c.setOnMouseMoved(null);
-					drawingWindow.importToMainCanvas(pl);
-					c.setDisable(true);
-					drawingWindow.disableMenus(false);
-					pl.setDrawnLineToPointList();
-					drawingWindow.addDrawingToList(pl);
-				}
-			});
+		});
+		c.setOnMouseClicked(ex -> {
+			if(ex.getButton() == MouseButton.PRIMARY) {
+				drawingWindow.importToMainCanvas(pl);
+				drawingWindow.softClear(c);
+				pl.setupNextLine(pl.getLastPoint());
+				pl.setDrawnLineToPointList();
+			}
+			else if(ex.getButton() == MouseButton.SECONDARY){
+				c.setOnMouseMoved(null);
+				drawingWindow.importToMainCanvas(pl);
+				c.setDisable(true);
+				drawingWindow.disableMenus(false);
+				pl.setDrawnLineToPointList();
+				drawingWindow.addDrawingToList(pl);
+			}
 		});
 	}
 	
@@ -112,31 +114,32 @@ public class Drawer {
 		p.setColor(drawColor);
 		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);
 		pl.setFirstPoint(p);
+		pl.setLastPoint(p);
 		drawingWindow.disableMenus(true);
 		c.setOnMouseMoved(em ->{
 			drawingWindow.softClear(c);
 			Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
 			pl.setLastPoint(l);
 			pl.draw(c, drawColor, thickness, iterations);
-			c.setOnMouseClicked(ex -> {
-				if(ex.getButton() == MouseButton.PRIMARY) {
-					drawingWindow.importToMainCanvas(pl);
-					drawingWindow.softClear(c);
-					pl.setupNextLine(pl.getLastPoint());
-					pl.setDrawnLineToPointList();
-				}
-				else if(ex.getButton() == MouseButton.SECONDARY){
-					pl.setLastPoint(pl.getFirstPoint());
-					pl.draw(c, drawColor, thickness, iterations);
-					drawingWindow.softClear(c);
-					c.setOnMouseMoved(null);
-					drawingWindow.importToMainCanvas(pl);
-					c.setDisable(true);
-					drawingWindow.disableMenus(false);
-					pl.setDrawnLineToPointList();
-					drawingWindow.addDrawingToList(pl);
-				}
-			});
+		});
+		c.setOnMouseClicked(ex -> {
+			if(ex.getButton() == MouseButton.PRIMARY) {
+				drawingWindow.importToMainCanvas(pl);
+				drawingWindow.softClear(c);
+				pl.setupNextLine(pl.getLastPoint());
+				pl.setDrawnLineToPointList();
+			}
+			else if(ex.getButton() == MouseButton.SECONDARY){
+				pl.setLastPoint(pl.getFirstPoint());
+				pl.draw(c, drawColor, thickness, iterations);
+				drawingWindow.softClear(c);
+				c.setOnMouseMoved(null);
+				drawingWindow.importToMainCanvas(pl);
+				c.setDisable(true);
+				drawingWindow.disableMenus(false);
+				pl.setDrawnLineToPointList();
+				drawingWindow.addDrawingToList(pl);
+			}
 		});
 	}
 	
@@ -145,20 +148,21 @@ public class Drawer {
 		p.setColor(drawColor);
 		p.drawPoint(c, drawColor, (int) thickness, (int) iterations);
 		shape.setFirstPoint(p);
+		shape.setLastPoint(p);
 		drawingWindow.disableMenus(true);
 		c.setOnMouseMoved(em ->{
 			drawingWindow.softClear(c);
 			Point l = new Point((int) em.getX(), (int)em.getY(), p.getDiameter());
 			shape.setLastPoint(l);
 			shape.draw(c, drawColor, thickness, (int) iterations);
-			c.setOnMouseClicked(ex -> {
-				IDrawing d = (IDrawing) shape;
-				c.setOnMouseMoved(null);
-				drawingWindow.importToMainCanvas(shape);
-				drawingWindow.addDrawingToList(d);
-				c.setDisable(true);
-				drawingWindow.disableMenus(false);
-				});
+			});
+		c.setOnMouseClicked(ex -> {
+			IDrawing d = (IDrawing) shape;
+			c.setOnMouseMoved(null);
+			drawingWindow.importToMainCanvas(shape);
+			drawingWindow.addDrawingToList(d);
+			c.setDisable(true);
+			drawingWindow.disableMenus(false);
 			});
 	}
 	
