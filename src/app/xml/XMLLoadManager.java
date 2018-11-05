@@ -33,10 +33,13 @@ public class XMLLoadManager {
 		drawings = new ArrayList<IDrawing>();
 		SAXBuilder builder = new SAXBuilder();
 		try {
-			Document xml = builder.build(new File("shapes.xml"));
-			Element root = xml.getRootElement();
-			for(Element l : root.getChildren()) {
-				drawings.add(getDrawingFromElement(l));
+			File loadFile = FileManager.loadFile("XML");
+			if(loadFile != null) {
+				Document xml = builder.build(loadFile);
+				Element root = xml.getRootElement();
+				for(Element l : root.getChildren()) {
+					drawings.add(getDrawingFromElement(l));
+				}
 			}
 		} catch (JDOMException | IOException e) {
 			e.printStackTrace();

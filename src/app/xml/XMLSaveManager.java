@@ -41,8 +41,11 @@ public class XMLSaveManager {
 		}
 		XMLOutputter xmlOutput = new XMLOutputter(Format.getPrettyFormat());
 		try {
-			xmlOutput.output(xml, new FileOutputStream(new File("shapes.xml")));
-			alertSaving(AlertType.INFORMATION, drawings.size());
+			File saveFile = FileManager.saveFile("XML");
+			if(saveFile != null) {
+				xmlOutput.output(xml, new FileOutputStream(saveFile));
+				alertSaving(AlertType.INFORMATION, drawings.size());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			alertSaving(AlertType.ERROR, drawings.size());

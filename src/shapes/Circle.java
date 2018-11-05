@@ -41,7 +41,6 @@ public class Circle implements IShape , IDrawing{
 	public void draw(Canvas cv, Color c, double diameter, double iterations) {
 		pointList.clear();
 		clearPointsInCanvas(cv.getGraphicsContext2D(), diameter);
-
 		drawCircle(cv.getGraphicsContext2D(), c, diameter);
 	}
 	
