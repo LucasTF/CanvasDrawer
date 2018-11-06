@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import abstractions.IDrawing;
 import abstractions.IShape;
 import abstractions.OptionsPane;
+import app.Clipper;
 import app.Drawer;
 import app.Eraser;
 import app.Translator;
@@ -41,8 +42,8 @@ import shapes.Point;
 
 public class CanvasGUI {
 	
-	private static final String fxml = "fxml/canvasGuiFXML.fxml";
-	public final Color background = Color.AZURE;
+	private static final String FXML_PATH = "fxml/canvasGuiFXML.fxml";
+	public final Color BACKGROUND = Color.WHITE;
 	
 	@FXML private Menu archiveMenu;
 	@FXML private MenuItem saveButton;
@@ -50,6 +51,7 @@ public class CanvasGUI {
 	
 	@FXML private Menu utilityMenu;
 	@FXML private MenuItem eraseButton;
+	@FXML private MenuItem clippingButton;
 	
 	@FXML private Menu colorMenu;
 	
@@ -81,11 +83,11 @@ public class CanvasGUI {
 	public CanvasGUI(Stage stage) throws IOException {
 		this.stage = stage;
 		this.drawnObjects = new ArrayList<IDrawing>();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_PATH));
 		loader.setController(this);
 		Parent root = loader.load();
 		this.stage.setScene(new Scene(root));
-		canvasPane.setBackground(new Background(new BackgroundFill(background, CornerRadii.EMPTY, Insets.EMPTY)));
+		canvasPane.setBackground(new Background(new BackgroundFill(BACKGROUND, CornerRadii.EMPTY, Insets.EMPTY)));
 		stage.setTitle("Canvas Drawer");
 		stage.setResizable(false);
 		stage.sizeToScene();
@@ -187,6 +189,18 @@ public class CanvasGUI {
 	}
 	
 	@FXML
+	private void setClippingMode() {
+		disableShapeOptions(false);
+		opPane.setSelectedObjectInformationVisible(false);
+		opPane.setTranslateInstructionVisible(false);
+		opPane.setDeleteInstructionVisible(false);
+		opPane.setRotateInstructionVisible(false);
+		drawingCanvas.setDisable(false);
+		Clipper clipper = new Clipper(mainCanvas);
+		clipper.selectArea(drawingCanvas);
+	}
+	
+	@FXML
 	private void setRectangleMode(){
 		disableShapeOptions(false);
 		rectangleButton.setDisable(true);
@@ -235,7 +249,7 @@ public class CanvasGUI {
 			@Override
 			public void handle(MouseEvent event) {
 					if(selectedDrawing != null) {
-						rotator.rotateDrawing(mainCanvas, background, selectedDrawing, drawnObjects, event.getX(), event.getY(), 90 /*code GUI angle input*/);
+						rotator.rotateDrawing(mainCanvas, BACKGROUND, selectedDrawing, drawnObjects, event.getX(), event.getY(), 90 /*code GUI angle input*/);
 					}
 					opPane.setSelectedObjectLabel("-");
 					mainCanvas.setOnMouseClicked(nextE -> setRotatingEnvironment(nextE));
@@ -257,7 +271,7 @@ public class CanvasGUI {
 			@Override
 			public void handle(MouseEvent event) {
 					if(selectedDrawing != null) {
-						translator.translateDrawing(mainCanvas, background, selectedDrawing, drawnObjects, event.getX(), event.getY());
+						translator.translateDrawing(mainCanvas, BACKGROUND, selectedDrawing, drawnObjects, event.getX(), event.getY());
 					}
 					opPane.setSelectedObjectLabel("-");
 					mainCanvas.setOnMouseClicked(nextE -> setTranslatingEnvironment(nextE));
@@ -276,7 +290,7 @@ public class CanvasGUI {
 			public void handle(KeyEvent event) {
 				if(event.getCode() == KeyCode.DELETE) {
 					if(selectedDrawing != null) {
-						eraser.eraseDrawing(mainCanvas, background, selectedDrawing.getPointList().get(0).getDiameter(), selectedDrawing, drawnObjects);
+						eraser.eraseDrawing(mainCanvas, BACKGROUND, selectedDrawing.getPointList().get(0).getDiameter(), selectedDrawing, drawnObjects);
 						opPane.setSelectedObjectLabel("-");
 					}
 				}
