@@ -10,10 +10,10 @@ import shapes.Point;
 
 public class Translator extends Selector
 {
-	public void translateDrawing(Canvas cv, Color c, IDrawing target, ArrayList<IDrawing> drawnObjects, double mouseX, double mouseY)
+	public void translateDrawing(Canvas cv, Color background, IDrawing target, ArrayList<IDrawing> drawnObjects, double mouseX, double mouseY)
 	{
 		Eraser eraser = new Eraser();
-		eraser.eraseDrawing(cv, c, target.getPointList().get(0).getDiameter(), target, drawnObjects);
+		eraser.eraseDrawing(cv, background, target.getPointList().get(0).getDiameter(), target, drawnObjects);
 		
 		int deltaX = 0;
 		int deltaY = 0;
@@ -21,15 +21,14 @@ public class Translator extends Selector
 		deltaX = (int) mouseX - center.getX();
 		deltaY = (int) mouseY - center.getY();
 				
-		ArrayList<Point> newPoints = new ArrayList<Point>();
-		for(Point p : target.getPointList())
+		ArrayList<Point> poi = target.getPointsOfInterest();
+		for(Point p : poi)
 		{
 			Point newP = new Point(p.getX() + deltaX, p.getY() + deltaY, target.getPointList().get(0).getDiameter());
-			newP.setColor(target.getPointList().get(0).getColor());
-			newPoints.add(newP);
+			newP.setColor(target.getColor());
+			poi.set(poi.indexOf(p), newP);
 		}
-		target.getPointList().clear();
-		target.getPointList().addAll(newPoints);
+		target.setPointsOfInterest(poi);
 		target.redraw(cv);
 		drawnObjects.add(target);
 	}

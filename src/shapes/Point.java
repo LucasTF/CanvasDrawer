@@ -98,17 +98,22 @@ public class Point implements IDrawing{
 	@Override
 	public void redraw(Canvas cv)
 	{
-		for(Point p : this.pointList)
-		{
-			p.drawTempPoint(cv, p.getColor(), p.getDiameter(), 0);
-		}
-		recalculatePointsOfInterest();
+			this.drawPoint(cv, this.color, this.diameter, 0);
 	}
 	
-	public void recalculatePointsOfInterest()
+	@Override
+	public ArrayList<Point> getPointsOfInterest()
 	{
-		this.x = this.pointList.get(0).x;
-		this.y = this.pointList.get(0).y;
-		this.point2d = new Point2D(x, y);
+		ArrayList<Point> poi = new ArrayList<Point>();
+		poi.add(this);
+		return poi;
+	}
+	
+	@Override
+	public void setPointsOfInterest(ArrayList<Point> poi)
+	{
+		this.x = poi.get(0).getX();
+		this.y = poi.get(0).getY();
+		this.point2d = new Point2D(this.x, this.y);
 	}
 }

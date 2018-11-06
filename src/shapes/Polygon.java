@@ -13,7 +13,8 @@ public class Polygon implements IShape, IDrawing{
 	private Point firstPoint;
 	private Point lastPoint;
 	private ArrayList<Line> lines;
-	private Color colorC;
+	private Color color;
+	private double diameter;;
 	
 	private ArrayList<Point> pointList = new ArrayList<Point>();
 	private ArrayList<Point> bufferList = new ArrayList<Point>();
@@ -45,6 +46,8 @@ public class Polygon implements IShape, IDrawing{
 	@Override
 	public void draw(Canvas gv, Color c, double diameter, double iterations) {
 		bufferList.clear();
+		this.color = c;
+		this.diameter = diameter;
 		lines.get(lines.size() - 1).draw(gv,c,diameter,iterations);
 		for(Point pl : lines.get(lines.size() - 1).getPointList()) {
 			bufferList.add(pl);
@@ -56,6 +59,9 @@ public class Polygon implements IShape, IDrawing{
 	}
 	
 	public void forceDrawPolygon(Canvas cv, Color c, double diameter){
+		this.pointList.clear();
+		this.color = c;
+		this.diameter = diameter;
 		for(Line l: lines){
 			l.draw(cv, c, diameter, 0);
 			for(Point p : l.getPointList()) {
@@ -105,40 +111,41 @@ public class Polygon implements IShape, IDrawing{
 	
 	public void redraw(Canvas cv)
 	{
-		for(Point p : this.pointList)
-		{
-			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
-		}
-		recalculatePointsOfInterest();
+		this.forceDrawPolygon(cv, this.color, this.diameter);
 	}
-
-	public void recalculatePointsOfInterest()
+	
+	@Override
+	public ArrayList<Point> getPointsOfInterest()
 	{
-		this.firstPoint = this.pointList.get(0);
-		this.lastPoint = this.pointList.get(this.pointList.size() - 1);
-		
-		int pointIndx = 0;
+		ArrayList<Point> poi = new ArrayList<Point>();
 		for(Line l : this.lines)
 		{
-			for(Point lp : l.getPointList())
-			{
-				l.getPointList().set(l.getPointList().indexOf(lp), this.pointList.get(pointIndx));
-				pointIndx++;
-			}
-			l.recalculatePointsOfInterest();
+			poi.add(l.getFirstPoint());
 		}
+		poi.add(this.lastPoint);
+		return poi;
+	}
+	
+	@Override
+	public void setPointsOfInterest(ArrayList<Point> poi)
+	{
+		int pointIdx = 0;
+		for(Line l : this.lines)
+		{
+			l.setFirstPoint(poi.get(pointIdx));
+			l.setLastPoint(poi.get(pointIdx + 1));
+			pointIdx++;
+		}
+		this.firstPoint = poi.get(0);
+		this.lastPoint = poi.get(pointIdx);;
 	}
 	
 	@Override
 	public Color getColor() {
-		return this.pointList.get(0).getColor();
+		return this.color;
 	}
 
-	public Color getColorC() {
-		return colorC;
-	}
-
-	public void setColorC(Color colorC) {
-		this.colorC = colorC;
+	public void setColor(Color colorC) {
+		this.color = colorC;
 	}
 }

@@ -14,6 +14,8 @@ public class Circle implements IShape , IDrawing{
 	private Point center;
 	private Point circPoint;
 	private int radius;
+	private Color color;
+	private double diameter;
 	private final double startingAngle = 0.1;
 	private final double angleStep = 0.1;
 	private final double finalAngle = 89.9;
@@ -40,6 +42,8 @@ public class Circle implements IShape , IDrawing{
 	@Override
 	public void draw(Canvas cv, Color c, double diameter, double iterations) {
 		pointList.clear();
+		this.color = c;
+		this.diameter = diameter;
 		clearPointsInCanvas(cv.getGraphicsContext2D(), diameter);
 		drawCircle(cv.getGraphicsContext2D(), c, diameter);
 	}
@@ -134,27 +138,23 @@ public class Circle implements IShape , IDrawing{
 	@Override
 	public void redraw(Canvas cv)
 	{
-		for(Point p : this.pointList)
-		{
-			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
-		}
-		recalculatePointsOfInterest();
+		this.draw(cv, this.color, this.diameter, 0);
 	}
 	
-	public void recalculatePointsOfInterest()
+	@Override
+	public ArrayList<Point> getPointsOfInterest()
 	{
-		int avgX = 0;
-		int avgY = 0;
-		for(Point p : this.pointList)
-		{
-			avgX += p.getX();
-			avgY += p.getY();
-		}
-		avgX /= this.pointList.size();
-		avgY /= this.pointList.size();
-		this.center = new Point(avgX, avgY);
-		this.circPoint = this.pointList.get(0);
-		this.setRadius((int) Math.sqrt(getXForRadius() + getYForRadius()));		
+		ArrayList<Point> poi = new ArrayList<Point>();
+		poi.add(this.center);
+		poi.add(this.circPoint);
+		return poi;
+	}
+	
+	@Override
+	public void setPointsOfInterest(ArrayList<Point> poi)
+	{
+		this.center = poi.get(0);
+		this.circPoint = poi.get(1);
 	}
 
 	public int getRadius() {
@@ -168,5 +168,10 @@ public class Circle implements IShape , IDrawing{
 	@Override
 	public Color getColor() {
 		return this.pointList.get(0).getColor();
+	}
+	
+	@Override
+	public void setColor(Color c) {
+		this.color = c;
 	}
 }

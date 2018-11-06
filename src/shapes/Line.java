@@ -12,6 +12,8 @@ public class Line implements IShape , IDrawing{
 	
 	private Point firstPoint;
 	private Point lastPoint;
+	private Color color;
+	private double diameter;
 	
 	private ArrayList<Point> pointList = new ArrayList<Point>();
 	
@@ -42,6 +44,8 @@ public class Line implements IShape , IDrawing{
 		
 	public void draw(Canvas cv, Color c, double diameter, double iterations) {
 		pointList.clear();
+		this.color = c;
+		this.diameter = diameter;
 		Point p;
 		double deltaX, deltaY;
 		int steps;
@@ -98,21 +102,32 @@ public class Line implements IShape , IDrawing{
 	@Override
 	public void redraw(Canvas cv)
 	{
-		for(Point p : this.pointList)
-		{
-			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
-		}
-		recalculatePointsOfInterest();
+		this.draw(cv, this.color, this.diameter, 0);
 	}
 	
-	public void recalculatePointsOfInterest()
+	@Override
+	public ArrayList<Point> getPointsOfInterest()
 	{
-		this.firstPoint = this.pointList.get(0);
-		this.lastPoint = this.pointList.get(this.pointList.size() - 1);
+		ArrayList<Point> poi = new ArrayList<Point>();
+		poi.add(this.firstPoint);
+		poi.add(this.lastPoint);
+		return poi;
+	}
+	
+	@Override
+	public void setPointsOfInterest(ArrayList<Point> poi)
+	{
+		this.firstPoint = poi.get(0);
+		this.lastPoint = poi.get(1);
 	}
 	
 	@Override
 	public Color getColor() {
 		return this.pointList.get(0).getColor();
+	}
+	
+	@Override
+	public void setColor(Color c) {
+		this.color = c;
 	}
 }

@@ -13,6 +13,8 @@ public class Rectangle implements IShape, IDrawing {
 	private Line lines[];
 	private Point firstPoint;
 	private Point lastPoint;
+	private Color color;
+	private double diameter;
 	
 	private ArrayList<Point> pointList = new ArrayList<Point>();
 	
@@ -65,6 +67,8 @@ public class Rectangle implements IShape, IDrawing {
 	@Override
 	public void draw(Canvas cv, Color c, double diameter, double iterations) {
 		pointList.clear();
+		this.color = c;
+		this.diameter = diameter;
 		Point secondPoint = new Point(lastPoint.getX(), firstPoint.getY());
 		Point thirdPoint = new Point(firstPoint.getX(), lastPoint.getY());
 		
@@ -93,32 +97,32 @@ public class Rectangle implements IShape, IDrawing {
 	@Override
 	public void redraw(Canvas cv)
 	{
-		for(Point p : this.pointList)
-		{
-			p.drawPoint(cv, p.getColor(), p.getDiameter(), 0);
-		}
-		recalculatePointsOfInterest();
+		this.draw(cv, this.color, this.diameter, 0);
 	}
-
-	public void recalculatePointsOfInterest()
+	
+	@Override
+	public ArrayList<Point> getPointsOfInterest()
 	{
-		this.firstPoint = this.pointList.get(0);
-		this.lastPoint = this.pointList.get(this.pointList.size() - 1);
-		
-		int pointIndx = 0;
-		for(Line l : this.lines)
-		{
-			for(Point lp : l.getPointList())
-			{
-				l.getPointList().set(l.getPointList().indexOf(lp), this.pointList.get(pointIndx));
-				pointIndx++;
-			}
-			l.recalculatePointsOfInterest();
-		}
+		ArrayList<Point> poi = new ArrayList<Point>();
+		poi.add(this.firstPoint);
+		poi.add(this.lastPoint);
+		return poi;
+	}
+	
+	@Override
+	public void setPointsOfInterest(ArrayList<Point> poi)
+	{
+		this.firstPoint = poi.get(0);
+		this.lastPoint = poi.get(1);;
 	}
 	
 	@Override
 	public Color getColor() {
 		return this.pointList.get(0).getColor();
+	}
+	
+	@Override
+	public void setColor(Color c) {
+		this.color = c;
 	}
 }

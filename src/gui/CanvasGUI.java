@@ -225,7 +225,7 @@ public class CanvasGUI {
 			for(IDrawing d : drawnObjects) {
 				if(d.getDrawingName() == ShapeType.CLOSEDPOLYGON.getShapeName()){
 					Polygon p = (Polygon) d;
-					p.forceDrawPolygon(mainCanvas, p.getColorC(), opPane.getThicknessValue());
+					p.forceDrawPolygon(mainCanvas, p.getColor(), opPane.getThicknessValue());
 				}
 				else{
 					IShape shape = (IShape) d;

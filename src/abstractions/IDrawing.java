@@ -12,6 +12,8 @@ public interface IDrawing {
 	public void erasePoints(Canvas cv, Color c, double thickness);
 	public String getDrawingName();
 	public void redraw(Canvas cv);
-	public void recalculatePointsOfInterest();
+	public ArrayList<Point> getPointsOfInterest();
+	public void setPointsOfInterest(ArrayList<Point> poi);
 	public Color getColor();
+	public void setColor(Color c); //TODO: change all code to use color fields instead the color of a point in the pointList
 }

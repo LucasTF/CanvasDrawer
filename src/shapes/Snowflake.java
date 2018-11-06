@@ -183,7 +183,25 @@ public class Snowflake implements IShape, IDrawing
 	}
 	
 	@Override
+	public ArrayList<Point> getPointsOfInterest()
+	{
+		//some day
+		return new ArrayList<Point>();
+	}
+	
+	@Override
+	public void setPointsOfInterest(ArrayList<Point> poi)
+	{
+		//some day
+	}
+	
+	@Override
 	public Color getColor() {
 		return this.color;
+	}
+	
+	@Override
+	public void setColor(Color c) {
+		this.color = c;
 	}
 }

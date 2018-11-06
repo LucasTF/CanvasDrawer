@@ -109,7 +109,7 @@ public class XMLLoadManager {
 			}
 		}
 		List<Element> rgb = polygonE.get(polygonE.size()-1).getChildren();
-		polygon.setColorC(Color.rgb((int) Double.parseDouble(rgb.get(0).getText()), (int) Double.parseDouble((rgb.get(1).getText())), (int) Double.parseDouble(rgb.get(2).getText())));
+		polygon.setColor(Color.rgb((int) Double.parseDouble(rgb.get(0).getText()), (int) Double.parseDouble((rgb.get(1).getText())), (int) Double.parseDouble(rgb.get(2).getText())));
 		return polygon;
 	}
 	
