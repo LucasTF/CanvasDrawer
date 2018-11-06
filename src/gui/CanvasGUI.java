@@ -223,14 +223,7 @@ public class CanvasGUI {
 		drawnObjects = xmlL.importXML();
 		if(drawnObjects != null) {
 			for(IDrawing d : drawnObjects) {
-				if(d.getDrawingName() == ShapeType.CLOSEDPOLYGON.getShapeName()){
-					Polygon p = (Polygon) d;
-					p.forceDrawPolygon(mainCanvas, p.getColor(), opPane.getThicknessValue());
-				}
-				else{
-					IShape shape = (IShape) d;
-					shape.draw(mainCanvas, shape.getFirstPoint().getColor(), opPane.getThicknessValue(), 0);
-				}
+				d.redraw(mainCanvas, opPane.getThicknessValue());
 			}
 		}
 	}

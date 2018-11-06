@@ -142,6 +142,12 @@ public class Circle implements IShape , IDrawing{
 	}
 	
 	@Override
+	public void redraw(Canvas cv, double diameter)
+	{
+		this.draw(cv, this.color, diameter, 0);
+	}
+	
+	@Override
 	public ArrayList<Point> getPointsOfInterest()
 	{
 		ArrayList<Point> poi = new ArrayList<Point>();
