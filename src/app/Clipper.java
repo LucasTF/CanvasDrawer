@@ -46,21 +46,39 @@ public class Clipper {
 	}
 	
 	private void openClippingWindow() {
-		int width = Math.abs(selectionRectangle.getLastPoint().getX() - selectionRectangle.getFirstPoint().getX());
-		int height = Math.abs(selectionRectangle.getLastPoint().getY() - selectionRectangle.getFirstPoint().getY());
-		stage = new Stage();
-		mainPane = new AnchorPane();
-		stage.setScene(new Scene(mainPane, width, height));
-		view = new ImageView();
-		mainPane.getChildren().add(view);
-		view.autosize();
-		SnapshotParameters par = new SnapshotParameters();
-		par.setViewport(new Rectangle2D(selectionRectangle.getFirstPoint().getX(), selectionRectangle.getFirstPoint().getY(), selectionRectangle.getLastPoint().getX(), selectionRectangle.getLastPoint().getY()));
-		view.setImage(copyCanvas.snapshot(par, new WritableImage(width, height)));
-		stage.setTitle("Clipping");
-		stage.setResizable(false);
-		stage.sizeToScene();
-		stage.show();
+		int width, height;
+		width = Math.abs(selectionRectangle.getLastPoint().getX() - selectionRectangle.getFirstPoint().getX());
+		height = Math.abs(selectionRectangle.getLastPoint().getY() - selectionRectangle.getFirstPoint().getY());
+		if(height > 0 && width > 0) {
+			stage = new Stage();
+			mainPane = new AnchorPane();
+			stage.setScene(new Scene(mainPane, width, height));
+			view = new ImageView();
+			mainPane.getChildren().add(view);
+			view.autosize();
+			SnapshotParameters par = new SnapshotParameters();
+			if(selectionRectangle.getLastPoint().getX() > selectionRectangle.getFirstPoint().getX()) {
+				if(selectionRectangle.getLastPoint().getY() > selectionRectangle.getFirstPoint().getY()) {
+					par.setViewport(new Rectangle2D(selectionRectangle.getFirstPoint().getX(), selectionRectangle.getFirstPoint().getY(), width, height));
+				}
+				else {
+					par.setViewport(new Rectangle2D(selectionRectangle.getFirstPoint().getX(), selectionRectangle.getLastPoint().getY(), width, height));
+				}
+			}
+			else {
+				if(selectionRectangle.getLastPoint().getY() > selectionRectangle.getFirstPoint().getY()) {
+					par.setViewport(new Rectangle2D(selectionRectangle.getLastPoint().getX(), selectionRectangle.getFirstPoint().getY(), width, height));
+				}
+				else {
+					par.setViewport(new Rectangle2D(selectionRectangle.getLastPoint().getX(), selectionRectangle.getLastPoint().getY(), width, height));
+				}
+			}
+			view.setImage(copyCanvas.snapshot(par, new WritableImage(width, height)));
+			stage.setTitle("Clipping");
+			stage.setResizable(false);
+			stage.sizeToScene();
+			stage.show();
+		}
 	}
 
 }
