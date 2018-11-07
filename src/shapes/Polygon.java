@@ -106,7 +106,7 @@ public class Polygon implements IShape, IDrawing{
 
 	@Override
 	public String getDrawingName() {
-		return ShapeType.CLOSEDPOLYGON.getShapeName();
+		return ShapeType.POLYGON.getShapeName();
 	}
 	
 	@Override

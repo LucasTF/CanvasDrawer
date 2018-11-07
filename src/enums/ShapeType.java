@@ -5,8 +5,8 @@ public enum ShapeType {
 	LINE("Reta"),
 	CIRCLE("Circunferência"),
 	SNOWFLAKE("Snowflake"),
+	POLYGON("Polígono/Linha Poligonal"),
 	POLYGONALLINE("Linha Poligonal"),
-	CLOSEDPOLYGON("Polígono"),
 	RECTANGLE("Retângulo");
 	
 	private String shapeName;

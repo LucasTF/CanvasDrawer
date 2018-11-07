@@ -61,6 +61,9 @@ public class XMLLoadManager {
 		else if(element.getName().equals("Poligono") || element.getName().equals("LinhaPoligonal")){
 			drawing = new Polygon();
 		}
+		else if(element.getName().equals("Ponto")) {
+			drawing = createPoint(element.getChildren());
+		}
 		else {
 			drawing = null;
 		}
@@ -87,6 +90,21 @@ public class XMLLoadManager {
 			poi.add(new Point(poi.get(0).getX() + radius, poi.get(0).getY()));
 		}
 		drawing.setPointsOfInterest(poi);
+	}
+	
+	private Point createPoint(List<Element> pointE) {
+		Point point;
+		Element x = pointE.get(0);
+		Element y;
+		if(x.getName().equals("x")) {
+			y = pointE.get(1);
+		}
+		else {
+			y = pointE.get(0);
+			x = pointE.get(1);
+		}
+		point = new Point(denormalizeX(x.getText()), denormalizeY(y.getText()));
+		return point;
 	}
 	
 	private int denormalizeX(String x) {
