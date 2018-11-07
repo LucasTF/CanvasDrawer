@@ -3,6 +3,7 @@ package app.xml;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -63,6 +64,7 @@ public class XMLLoadManager {
 		}
 		else if(element.getName().equals("Ponto")) {
 			drawing = createPoint(element.getChildren());
+			return drawing;
 		}
 		else {
 			drawing = null;
