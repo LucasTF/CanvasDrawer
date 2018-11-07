@@ -109,9 +109,15 @@ public class Polygon implements IShape, IDrawing{
 		return ShapeType.CLOSEDPOLYGON.getShapeName();
 	}
 	
+	@Override
 	public void redraw(Canvas cv)
 	{
 		this.forceDrawPolygon(cv, this.color, this.diameter);
+	}
+	 @Override
+	public void redraw(Canvas cv, double diameter)
+	{
+		this.forceDrawPolygon(cv, this.color, diameter);
 	}
 	
 	@Override
@@ -129,15 +135,13 @@ public class Polygon implements IShape, IDrawing{
 	@Override
 	public void setPointsOfInterest(ArrayList<Point> poi)
 	{
-		int pointIdx = 0;
-		for(Line l : this.lines)
+		this.lines.clear();
+		for(int p = 0; p < poi.size() - 1; p++)
 		{
-			l.setFirstPoint(poi.get(pointIdx));
-			l.setLastPoint(poi.get(pointIdx + 1));
-			pointIdx++;
+			this.lines.add(new Line(poi.get(p), poi.get(p + 1)));
 		}
 		this.firstPoint = poi.get(0);
-		this.lastPoint = poi.get(pointIdx);;
+		this.lastPoint = poi.get(poi.size() - 1);;
 	}
 	
 	@Override

@@ -177,6 +177,12 @@ public class Snowflake implements IShape, IDrawing
 		}
 	}
 	
+	@Override
+	public void redraw(Canvas cv, double diameter)
+	{
+		//some day
+	}
+	
 	public void recalculatePointsOfInterest()
 	{
 		//some day
