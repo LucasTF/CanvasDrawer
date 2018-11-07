@@ -146,7 +146,7 @@ public class CanvasGUI {
 	private void setClosedPolygonMode() {
 		disableShapeOptions(false);
 		closedPolygonButton.setDisable(true);
-		selectedShape = ShapeType.CLOSEDPOLYGON;
+		selectedShape = ShapeType.POLYGON;
 		mainCanvas.setOnMouseClicked(e -> setDrawingEnvironment(e));
 		setOptionsBar(selectedShape);
 	}
@@ -219,13 +219,18 @@ public class CanvasGUI {
 	@FXML
 	public void loadDrawing() {
 		XMLLoadManager xmlL = new XMLLoadManager(mainCanvas.getHeight(), mainCanvas.getWidth());
-		clearCanvas(mainCanvas);
-		drawnObjects = xmlL.importXML();
-		if(drawnObjects != null) {
+		ArrayList<IDrawing> loadedObjects = xmlL.importXML();
+		if(loadedObjects.size() > 0) {
+			clearCanvas(mainCanvas);
+			drawnObjects = loadedObjects;
 			for(IDrawing d : drawnObjects) {
-				if(d.getDrawingName() == ShapeType.CLOSEDPOLYGON.getShapeName()){
+				if(d.getDrawingName().equals(ShapeType.POLYGON.getShapeName())){
 					Polygon p = (Polygon) d;
 					p.forceDrawPolygon(mainCanvas, p.getColor(), opPane.getThicknessValue());
+				}
+				else if(d.getDrawingName().equals(ShapeType.POINT.getShapeName())) {
+					Point p = (Point) d;
+					p.drawPoint(mainCanvas, Color.BLACK, (int) opPane.getThicknessValue(), 0);
 				}
 				else{
 					IShape shape = (IShape) d;
@@ -328,7 +333,7 @@ public class CanvasGUI {
 			drawer.setShape(new Rectangle());
 			drawer.drawRectangle(e, drawColor, drawingCanvas, opPane.getThicknessValue());
 			break;
-		case CLOSEDPOLYGON:
+		case POLYGON:
 			drawingCanvas.setDisable(false);
 			drawer.setShape(new Polygon());
 			drawer.drawClosedPolygon(e, drawColor, drawingCanvas, opPane.getThicknessValue());

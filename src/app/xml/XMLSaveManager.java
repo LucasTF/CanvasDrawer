@@ -18,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 import shapes.Circle;
 import shapes.Line;
+import shapes.Point;
 import shapes.Polygon;
 import shapes.Rectangle;
 
@@ -63,8 +64,12 @@ public class XMLSaveManager {
 		else if(d.getDrawingName().equals(ShapeType.RECTANGLE.getShapeName())) {
 			l = createRectangleElement((Rectangle) d);
 		}
-		else if(d.getDrawingName().equals(ShapeType.CLOSEDPOLYGON.getShapeName())) {
+		else if(d.getDrawingName().equals(ShapeType.POLYGON.getShapeName())) {
 			l = createPolygonElement((Polygon) d);
+		}
+		else if(d.getDrawingName().equals(ShapeType.POINT.getShapeName())) {
+			Point p = (Point) d;
+			l = createPointElement(normalizeX(p.getX()), normalizeY(p.getY()));
 		}
 		else {
 			l = null;
@@ -107,7 +112,13 @@ public class XMLSaveManager {
 	}
 	
 	private Element createPolygonElement(Polygon polygon) {
-		Element l = new Element("Poligono");
+		Element l;
+		if(polygon.getFirstPoint().getX() == polygon.getLastPoint().getX() && polygon.getFirstPoint().getY() == polygon.getLastPoint().getY()) {
+			l = new Element("Poligono");
+		}
+		else{
+			l = new Element("LinhaPoligonal");
+		}
 		Element originPoint = createPointElement(normalizeX(polygon.getLines().get(0).getFirstPoint().getX()), normalizeY(polygon.getLines().get(0).getFirstPoint().getY()));
 		l.addContent(originPoint);
 		for(Line li : polygon.getLines()) {
