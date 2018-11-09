@@ -2,38 +2,51 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="optionsPane" prefHeight="35.0" prefWidth="500.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<AnchorPane fx:id="optionsPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
    <children>
-      <Slider fx:id="diameterSlider" blockIncrement="1.0" layoutX="72.0" layoutY="6.0" majorTickUnit="5.0" max="30.0" min="1.0" prefHeight="24.0" prefWidth="158.0" showTickMarks="true" snapToTicks="true" value="3.0" />
-      <Text layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Espessura:" wrappingWidth="57.908203125" />
-      <Text fx:id="selectedObjectText" layoutX="299.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Objeto Selecionado:" visible="false" />
-      <Label fx:id="selectedObjectLabel" layoutX="412.0" layoutY="1.0" text="Object" visible="false">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font></Label>
-      <Text fx:id="deleteInstructionText" layoutX="310.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pressione DELETE para apagar" visible="false">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Text>
-      <Text fx:id="translateInstructionText" layoutX="310.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Utilize o mouse para translatar" visible="false">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Text>
-      <Text fx:id="rotateInstructionText" layoutX="310.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Utilize o mouse para rotacionar" visible="false">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Text>
-       <Text fx:id="scaleInstructionText" layoutX="310.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Utilize o mouse para escalar" visible="false">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Text>
+      <Pane prefHeight="35.0" prefWidth="245.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Espessura:" wrappingWidth="57.908203125" />
+            <Slider fx:id="diameterSlider" blockIncrement="1.0" layoutX="72.0" layoutY="6.0" majorTickUnit="5.0" max="30.0" min="1.0" prefHeight="24.0" prefWidth="158.0" showTickMarks="true" snapToTicks="true" value="3.0" />
+         </children>
+      </Pane>
+      <Pane fx:id="rotationPane" layoutX="245.0" layoutY="1.0" prefHeight="35.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="245.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ângulo (graus):" />
+            <TextField fx:id="degreeField" layoutX="104.0" layoutY="5.0" prefHeight="25.0" prefWidth="80.0" />
+         </children>
+      </Pane>
+      <Pane fx:id="scalePane" layoutX="257.0" prefHeight="35.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="245.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Escala:" />
+            <TextField fx:id="scaleField" layoutX="59.0" layoutY="5.0" prefHeight="25.0" prefWidth="80.0" />
+            <Text layoutX="152.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane fx:id="informationPane" layoutX="445.0" prefHeight="35.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="445.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text layoutX="14.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Objeto Selecionado:" />
+            <Label fx:id="selectedObjectLabel" alignment="TOP_LEFT" layoutX="123.0" layoutY="5.0" prefHeight="17.0" prefWidth="80.0" text="Object">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Text fx:id="instructionText" layoutX="22.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pressione DELETE para apagar">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

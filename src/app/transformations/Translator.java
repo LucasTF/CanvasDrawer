@@ -1,9 +1,10 @@
-package app;
+package app.transformations;
 
 import java.util.ArrayList;
 
 import abstractions.IDrawing;
 import abstractions.Selector;
+import app.utils.Eraser;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import shapes.Point;

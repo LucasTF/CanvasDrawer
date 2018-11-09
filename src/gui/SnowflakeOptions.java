@@ -21,4 +21,10 @@ public class SnowflakeOptions extends OptionsPane{
 		return iterationSlider.getValue();
 	}
 
+	@Override
+	public void setSimpleDrawingBar() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

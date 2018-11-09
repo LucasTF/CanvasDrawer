@@ -18,4 +18,12 @@ public class BasicOptions extends OptionsPane{
 		return 0;
 	}
 
+	@Override
+	public void setSimpleDrawingBar() {
+		this.informationPane.setVisible(false);
+		this.rotationPane.setVisible(false);
+		this.scalePane.setVisible(false);
+		this.diameterSlider.setDisable(false);
+	}
+
 }

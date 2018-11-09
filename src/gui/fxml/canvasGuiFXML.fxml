@@ -22,9 +22,9 @@
                 <MenuItem fx:id="eraseButton" mnemonicParsing="false" onAction="#setEraseMode" text="Borracha" />
                 <MenuItem fx:id="clippingButton" mnemonicParsing="false" onAction="#setClippingMode" text="Clipping" />
                 <MenuItem mnemonicParsing="false" onAction="#clearMainCanvas" text="Limpar tela" />
+                <MenuItem fx:id="scaleButton" mnemonicParsing="false" onAction="#setScaleMode" text="Redimensionar" />
                 <MenuItem fx:id="rotateButton" mnemonicParsing="false" onAction="#setRotateMode" text="Rotacionar" />
                 <MenuItem fx:id="translateButton" mnemonicParsing="false" onAction="#setTranslateMode" text="Translatar" />
-                <MenuItem fx:id="scaleButton" mnemonicParsing="false" onAction="#setScaleMode" text="Escalar" />
               </items>
             </Menu>
           <Menu fx:id="shapeMenu" mnemonicParsing="false" text="Formas">

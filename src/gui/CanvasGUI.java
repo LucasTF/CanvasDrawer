@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import abstractions.IDrawing;
 import abstractions.IShape;
 import abstractions.OptionsPane;
-import app.Clipper;
 import app.Drawer;
-import app.Eraser;
-import app.Translator;
+import app.transformations.Rotator;
+import app.transformations.Scaler;
+import app.transformations.Translator;
+import app.utils.Clipper;
+import app.utils.Eraser;
 import app.xml.XMLLoadManager;
 import app.xml.XMLSaveManager;
-import app.Rotator;
-import app.Scaler;
 import enums.ShapeType;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -73,7 +73,7 @@ public class CanvasGUI {
 	public Color drawColor = Color.BLACK;
 	
 	private Stage stage;
-	private OptionsPane opPane;
+	private OptionsPane opPane = null;
 	private ShapeType selectedShape;
 	private IDrawing selectedDrawing;
 	
@@ -155,11 +155,8 @@ public class CanvasGUI {
 	@FXML
 	private void setEraseMode() {
 		disableShapeOptions(false);
-		opPane.setSelectedObjectInformationVisible(true);
-		opPane.setDeleteInstructionVisible(true);
-		opPane.setScaleInstructionVisible(false);
-		opPane.setTranslateInstructionVisible(false);
-		opPane.setRotateInstructionVisible(false);
+		opPane.setInstructionText("Pressione DELETE para apagar.");
+		opPane.setInformationVisible(true);
 		opPane.disableSlider(true);
 		opPane.setSelectedObjectLabel("-");
 		mainCanvas.setOnMouseClicked(e -> setErasingEnvironment(e));
@@ -168,11 +165,9 @@ public class CanvasGUI {
 	@FXML
 	private void setTranslateMode() {
 		disableShapeOptions(false);
-		opPane.setSelectedObjectInformationVisible(true);
-		opPane.setTranslateInstructionVisible(true);
-		opPane.setScaleInstructionVisible(false);
-		opPane.setDeleteInstructionVisible(false);
-		opPane.setRotateInstructionVisible(false);
+		opPane.setInstructionText("Utilize o mouse para translatar.");
+		opPane.setSimpleDrawingBar();
+		opPane.setInformationVisible(true);
 		opPane.disableSlider(true);
 		opPane.setSelectedObjectLabel("-");
 		mainCanvas.setOnMouseClicked(e -> setTranslatingEnvironment(e));
@@ -182,11 +177,9 @@ public class CanvasGUI {
 	@FXML
 	private void setRotateMode() {
 		disableShapeOptions(false);
-		opPane.setSelectedObjectInformationVisible(true);
-		opPane.setRotateInstructionVisible(true);
-		opPane.setScaleInstructionVisible(false);
-		opPane.setTranslateInstructionVisible(false);
-		opPane.setDeleteInstructionVisible(false);
+		opPane.setInstructionText("Utilize o mouse para rotacionar.");
+		opPane.setInformationVisible(true);
+		opPane.setRotationVisible(true);
 		opPane.disableSlider(true);
 		opPane.setSelectedObjectLabel("-");
 		mainCanvas.setOnMouseClicked(e -> setRotatingEnvironment(e));
@@ -195,11 +188,9 @@ public class CanvasGUI {
 	@FXML
 	private void setScaleMode() {
 		disableShapeOptions(false);
-		opPane.setSelectedObjectInformationVisible(true);
-		opPane.setScaleInstructionVisible(true);
-		opPane.setRotateInstructionVisible(false);
-		opPane.setTranslateInstructionVisible(false);
-		opPane.setDeleteInstructionVisible(false);
+		opPane.setInstructionText("Utilize o mouse para redimensionar.");
+		opPane.setInformationVisible(true);
+		opPane.setScaleVisible(true);
 		opPane.disableSlider(true);
 		opPane.setSelectedObjectLabel("-");
 		mainCanvas.setOnMouseClicked(e -> setScalingEnvironment(e));
@@ -208,11 +199,7 @@ public class CanvasGUI {
 	@FXML
 	private void setClippingMode() {
 		disableShapeOptions(false);
-		opPane.setSelectedObjectInformationVisible(false);
-		opPane.setScaleInstructionVisible(false);
-		opPane.setTranslateInstructionVisible(false);
-		opPane.setDeleteInstructionVisible(false);
-		opPane.setRotateInstructionVisible(false);
+		opPane.setInformationVisible(false);
 		drawingCanvas.setDisable(false);
 		Clipper clipper = new Clipper(mainCanvas);
 		clipper.selectArea(drawingCanvas);
@@ -261,7 +248,7 @@ public class CanvasGUI {
 			@Override
 			public void handle(MouseEvent event) {
 					if(selectedDrawing != null) {
-						scaler.scaleDrawing(mainCanvas, BACKGROUND, selectedDrawing, drawnObjects, event.getX(), event.getY(), 1.2 /*code GUI factor input*/);
+						scaler.scaleDrawing(mainCanvas, BACKGROUND, selectedDrawing, drawnObjects, event.getX(), event.getY(), opPane.getScaleFactor());
 					}
 					opPane.setSelectedObjectLabel("-");
 					mainCanvas.setOnMouseClicked(nextE -> setScalingEnvironment(nextE));
@@ -283,7 +270,7 @@ public class CanvasGUI {
 			@Override
 			public void handle(MouseEvent event) {
 					if(selectedDrawing != null) {
-						rotator.rotateDrawing(mainCanvas, BACKGROUND, selectedDrawing, drawnObjects, event.getX(), event.getY(), 90 /*code GUI angle input*/);
+						rotator.rotateDrawing(mainCanvas, BACKGROUND, selectedDrawing, drawnObjects, event.getX(), event.getY(), opPane.getRotationAngle());
 					}
 					opPane.setSelectedObjectLabel("-");
 					mainCanvas.setOnMouseClicked(nextE -> setRotatingEnvironment(nextE));
@@ -381,10 +368,7 @@ public class CanvasGUI {
 	public void clearCanvas(Canvas c) {
 		c.getGraphicsContext2D().clearRect(0, 0, c.getWidth(), c.getHeight());
 		drawnObjects.clear();
-		opPane.setSelectedObjectInformationVisible(false);
-		opPane.setDeleteInstructionVisible(false);
-		opPane.setTranslateInstructionVisible(false);
-		opPane.setRotateInstructionVisible(false);
+		opPane.setSimpleDrawingBar();
 	}
 	
 	public void softClear(Canvas c) {
