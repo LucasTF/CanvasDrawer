@@ -13,6 +13,7 @@ import app.Translator;
 import app.xml.XMLLoadManager;
 import app.xml.XMLSaveManager;
 import app.Rotator;
+import app.Scaler;
 import enums.ShapeType;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -156,6 +157,7 @@ public class CanvasGUI {
 		disableShapeOptions(false);
 		opPane.setSelectedObjectInformationVisible(true);
 		opPane.setDeleteInstructionVisible(true);
+		opPane.setScaleInstructionVisible(false);
 		opPane.setTranslateInstructionVisible(false);
 		opPane.setRotateInstructionVisible(false);
 		opPane.disableSlider(true);
@@ -168,6 +170,7 @@ public class CanvasGUI {
 		disableShapeOptions(false);
 		opPane.setSelectedObjectInformationVisible(true);
 		opPane.setTranslateInstructionVisible(true);
+		opPane.setScaleInstructionVisible(false);
 		opPane.setDeleteInstructionVisible(false);
 		opPane.setRotateInstructionVisible(false);
 		opPane.disableSlider(true);
@@ -181,6 +184,7 @@ public class CanvasGUI {
 		disableShapeOptions(false);
 		opPane.setSelectedObjectInformationVisible(true);
 		opPane.setRotateInstructionVisible(true);
+		opPane.setScaleInstructionVisible(false);
 		opPane.setTranslateInstructionVisible(false);
 		opPane.setDeleteInstructionVisible(false);
 		opPane.disableSlider(true);
@@ -189,9 +193,23 @@ public class CanvasGUI {
 	}
 	
 	@FXML
+	private void setScaleMode() {
+		disableShapeOptions(false);
+		opPane.setSelectedObjectInformationVisible(true);
+		opPane.setScaleInstructionVisible(true);
+		opPane.setRotateInstructionVisible(false);
+		opPane.setTranslateInstructionVisible(false);
+		opPane.setDeleteInstructionVisible(false);
+		opPane.disableSlider(true);
+		opPane.setSelectedObjectLabel("-");
+		mainCanvas.setOnMouseClicked(e -> setScalingEnvironment(e));
+	}
+	
+	@FXML
 	private void setClippingMode() {
 		disableShapeOptions(false);
 		opPane.setSelectedObjectInformationVisible(false);
+		opPane.setScaleInstructionVisible(false);
 		opPane.setTranslateInstructionVisible(false);
 		opPane.setDeleteInstructionVisible(false);
 		opPane.setRotateInstructionVisible(false);
@@ -227,6 +245,28 @@ public class CanvasGUI {
 				d.redraw(mainCanvas, opPane.getThicknessValue());
 			}
 		}
+	}
+	
+	private void setScalingEnvironment(MouseEvent e) {
+		selectedDrawing = null;
+		Scaler scaler = new Scaler();
+		selectedDrawing = scaler.findClickedDrawing(e, drawnObjects);
+		if(selectedDrawing != null) {
+			opPane.setSelectedObjectLabel(selectedDrawing.getDrawingName());
+		}
+		else {
+			opPane.setSelectedObjectLabel("-");
+		}
+		mainCanvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+					if(selectedDrawing != null) {
+						scaler.scaleDrawing(mainCanvas, BACKGROUND, selectedDrawing, drawnObjects, event.getX(), event.getY(), 1.2 /*code GUI factor input*/);
+					}
+					opPane.setSelectedObjectLabel("-");
+					mainCanvas.setOnMouseClicked(nextE -> setScalingEnvironment(nextE));
+			}
+		});
 	}
 	
 	private void setRotatingEnvironment(MouseEvent e) {

@@ -19,6 +19,7 @@ public abstract class OptionsPane {
 	@FXML protected Text deleteInstructionText;
 	@FXML protected Text translateInstructionText;
 	@FXML protected Text rotateInstructionText;
+	@FXML protected Text scaleInstructionText;
 	
 	public OptionsPane(Parent parent, String fxmlPath) throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -57,6 +58,10 @@ public abstract class OptionsPane {
 	
 	public void setRotateInstructionVisible(boolean d) {
 		rotateInstructionText.setVisible(d);
+	}
+	
+	public void setScaleInstructionVisible(boolean d) {
+		scaleInstructionText.setVisible(d);
 	}
 	
 	public abstract double getIterationsValue();
